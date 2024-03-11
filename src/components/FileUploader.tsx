@@ -1,8 +1,9 @@
 import React from "react";
+import { useLogsDataContext } from "../contexts/LogsDataContext";
 
 export const FileUploader = () => {
 
-    const readData = (content: string) => console.log(content);
+    const { readData } = useLogsDataContext();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];

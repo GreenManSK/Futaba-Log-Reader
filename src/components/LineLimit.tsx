@@ -1,0 +1,26 @@
+import React from "react";
+import { useLogsDataContext } from "../contexts/LogsDataContext";
+
+interface ILineLimitProps {
+    lineLimit: number;
+    setLineLimit: (lineLimit: number) => void;
+}
+
+const DEFAULT_LINES_LIMIT_INCREASE = 5000;
+export const LineLimit = (props: ILineLimitProps) => {
+    const { lineLimit, setLineLimit } = props;
+    const { data } = useLogsDataContext();
+
+    const loadMoreLines = () => setLineLimit(lineLimit + DEFAULT_LINES_LIMIT_INCREASE);
+    const setCustomLimit = () => {
+        const customLimit = prompt("Enter custom limit", `${data?.length || lineLimit}`);
+        setLineLimit(Number(customLimit) || lineLimit);
+
+    };
+
+    return <div>
+        {`Currently working only with the first ${lineLimit} lines of ${data?.length}.`}
+        <button onClick={loadMoreLines}>Load more</button>
+        <button onClick={setCustomLimit}>Set custom limit</button>
+    </div>
+};

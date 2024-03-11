@@ -1,12 +1,15 @@
 import React from "react";
 import './App.css';
-import { FileUploader } from "./components/FileUploader";
+import { LogsDataProvider } from "./contexts/LogsDataContext";
+import { Content } from "./components/Content";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <FileUploader />
+        <LogsDataProvider>
+          <Content />
+        </LogsDataProvider>
       </header>
     </div>
   );
