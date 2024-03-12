@@ -17,13 +17,11 @@ export const Searches = (props: ISearchProps) => {
     const updateSearch = React.useCallback((index: number, search: SearchFilter) => {
         const newSearches = searches.slice();
         newSearches[index] = search;
-        console.log(newSearches)
         setSearches(newSearches);
     }, [searches, setSearches]);
     const removeSearch = React.useCallback((index: number) => () => {
         const newSearches = searches.slice();
         newSearches.splice(index, 1);
-        console.log(index, newSearches, searches)
         setSearches(newSearches);
     }, [searches, setSearches]);
 
