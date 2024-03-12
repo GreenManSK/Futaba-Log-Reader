@@ -9,6 +9,7 @@ import { ILogEntry, LogLevel } from "../../data/ILogEntry";
 import { SearchFilter } from "../../data/SearchFilter";
 import { Searches } from "../Search/Searches";
 import { SessionSelector } from "./SessionSelector";
+import { TimeRange, ITimeRange } from "./TimeRange";
 
 const DEFAULT_LINES_LIMIT = 5000;
 const DEFAULT_LEVEL_FILTER = [LogLevel.WARNING, LogLevel.ERROR, LogLevel.UNKNOWN];
@@ -22,16 +23,27 @@ export const LogReader = () => {
     const [levelFilter, setLevelFilter] = React.useState(new Set(DEFAULT_LEVEL_FILTER));
     const [excludedClasses, setExcludedClasses] = React.useState(new Set<string>());
     const [searches, setSearches] = React.useState([new SearchFilter()]);
+    const [timeRange, setTimeRange] = React.useState({ start: new Date(), end: new Date() });
 
     const data = currentSession?.data;
 
+    React.useEffect(() => {
+        if (!data) {
+            return;
+        }
+        const dates = data.map(entry => entry.date.getTime());
+        const start = new Date(Math.min(...dates));
+        const end = new Date(Math.max(...dates));
+        setTimeRange({ start, end });
+    }, [data]);
+
     const updateFilteredData = React.useMemo(() => {
-        const update = (data: ILogEntry[] | undefined, lineLimit: number, levelFilter: Set<LogLevel>, excludedClasses: Set<string>, searches: SearchFilter[]) => {
+        const update = (data: ILogEntry[] | undefined, lineLimit: number, levelFilter: Set<LogLevel>, excludedClasses: Set<string>, searches: SearchFilter[], timeRange: ITimeRange) => {
             if (!data) {
                 return [];
             }
             const prefiltered = data
-                .filter(entry => levelFilter.has(entry.level) && !excludedClasses.has(entry.loggingClass));
+                .filter(entry => levelFilter.has(entry.level) && !excludedClasses.has(entry.loggingClass) && entry.isInRange(timeRange.start, timeRange.end));
             if (!searches.length) {
                 setFilteredData(prefiltered.slice(0, lineLimit));
                 return;
@@ -44,8 +56,8 @@ export const LogReader = () => {
     }, [setFilteredData]);
 
     React.useEffect(() => {
-        updateFilteredData(data, lineLimit, levelFilter, excludedClasses, searches);
-    }, [data, lineLimit, levelFilter, excludedClasses, searches, updateFilteredData]);
+        updateFilteredData(data, lineLimit, levelFilter, excludedClasses, searches, timeRange);
+    }, [data, lineLimit, levelFilter, excludedClasses, searches, updateFilteredData, timeRange]);
 
     return <div>
         <div className="panel">
@@ -54,6 +66,7 @@ export const LogReader = () => {
         </div>
         <div className="main-content">
             <SessionSelector />
+            <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
             <Searches searches={searches} setSearches={setSearches} />
             {<LogTable data={filteredData} />}
             <LineLimit lineLimit={lineLimit} setLineLimit={setLineLimit} />

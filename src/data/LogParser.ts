@@ -5,7 +5,8 @@ import { ISearchFilter } from "./ISearchFilter";
 const CALL_ID_PREFIX = "CID[";
 class LogEntry implements ILogEntry {
     public id: number;
-    public date: string;
+    public dateText: string;
+    public date: Date;
     public level: LogLevel;
     public loggingClass: string;
     public message: string;
@@ -16,7 +17,8 @@ class LogEntry implements ILogEntry {
 
     constructor(id: number, date: string, level: LogLevel, loggingClass: string, message: string) {
         this.id = id;
-        this.date = date;
+        this.dateText = date;
+        this.date = new Date(Date.parse(date));
         this.level = level;
         this.message = message;
         this.loggingClass = loggingClass;
@@ -26,6 +28,10 @@ class LogEntry implements ILogEntry {
     public matchesFilter(search: ISearchFilter): boolean {
         return this.messageMatchesFilter(search) || this.loggingClassMatchesFilter(search);
     }
+
+    public isInRange(start: Date, end: Date): boolean {
+        return this.date >= start && this.date <= end;
+    }   
 
     private messageMatchesFilter(search: ISearchFilter): boolean {
         if (this._messageLoweCase === undefined) {

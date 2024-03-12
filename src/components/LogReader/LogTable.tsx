@@ -21,7 +21,7 @@ export const LogTable = ({ data }: ILogTableProps) => {
                 {data.map((entry, index) => (
                     <tr key={index}>
                         <td>{entry.id}</td>
-                        <td>{entry.date}</td>
+                        <td>{entry.dateText}</td>
                         <td>{LogLevel[entry.level]}</td>
                         <td>
                             {entry.loggingClass}

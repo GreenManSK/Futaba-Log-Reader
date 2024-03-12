@@ -10,11 +10,13 @@ export enum LogLevel {
 
 export interface ILogEntry {
     id: number,
-    date: string,
+    dateText: string,
+    date: Date,
     level: LogLevel,
     loggingClass: string,
     message: string
     callId?: string;
 
     matchesFilter(search: ISearchFilter): boolean;
+    isInRange(start: Date, end: Date): boolean;
 }
