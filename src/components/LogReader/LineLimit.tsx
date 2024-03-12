@@ -1,5 +1,5 @@
 import React from "react";
-import { useLogsDataContext } from "../contexts/LogsDataContext";
+import { useLogsDataContext } from "../../contexts/LogsDataContext";
 
 interface ILineLimitProps {
     lineLimit: number;

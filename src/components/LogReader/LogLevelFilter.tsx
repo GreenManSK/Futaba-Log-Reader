@@ -1,5 +1,5 @@
 import React from "react";
-import { LogLevel } from "../data/ILogEntry";
+import { LogLevel } from "../../data/ILogEntry";
 
 interface ILogLevelFilterProps {
     levelFilter: Set<LogLevel>,
