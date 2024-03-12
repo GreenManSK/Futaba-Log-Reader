@@ -1,5 +1,5 @@
 import React from "react";
-import { ILogEntry, LogLevel } from "../data/LogParser";
+import { ILogEntry, LogLevel } from "../data/ILogEntry";
 
 interface ILogTableProps {
     data: ILogEntry[]

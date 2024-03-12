@@ -19,7 +19,7 @@ export const LineLimit = (props: ILineLimitProps) => {
     };
 
     return <div>
-        {`Currently working only with the first ${lineLimit} lines of ${data?.length}.`}
+        {`Showing at most the first ${lineLimit} lines of ${data?.length}.`}
         <button onClick={loadMoreLines}>Load more</button>
         <button onClick={setCustomLimit}>Set custom limit</button>
     </div>

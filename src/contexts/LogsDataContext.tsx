@@ -1,5 +1,6 @@
 import React from "react";
-import { ILogEntry, parseLogs } from "../data/LogParser";
+import { parseLogs } from "../data/LogParser";
+import { ILogEntry } from "../data/ILogEntry";
 
 interface ILogsDataContext {
     data?: ILogEntry[]

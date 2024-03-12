@@ -1,21 +1,5 @@
-export enum LogLevel {
-    INFO,
-    WARNING,
-    ERROR,
-    DEBUG,
-    UNKNOWN
-};
-
-export interface ILogEntry {
-    id: number,
-    date: string,
-    level: LogLevel,
-    loggingClass: string,
-    message: string
-    callId?: string;
-
-    matchesFilter(search: string): boolean;
-}
+import { ILogEntry, LogLevel } from "./ILogEntry";
+import { ISearchFilter } from "./ISearchFilter";
 
 const CALL_ID_PREFIX = "CID[";
 class LogEntry implements ILogEntry {
@@ -38,22 +22,22 @@ class LogEntry implements ILogEntry {
         this.setLoggingClassData(loggingClass);
     }
 
-    public matchesFilter(search: string): boolean {
+    public matchesFilter(search: ISearchFilter): boolean {
         return this.messageMatchesFilter(search) || this.loggingClassMatchesFilter(search);
     }
 
-    private messageMatchesFilter(search: string): boolean {
+    private messageMatchesFilter(search: ISearchFilter): boolean {
         if (this._messageLoweCase === undefined) {
             this._messageLoweCase = this.message.toLowerCase();
         }
-        return this._messageLoweCase.includes(search);
+        return search.matchesFilter(this.message, this._messageLoweCase);
     }
 
-    private loggingClassMatchesFilter(search: string): boolean {
+    private loggingClassMatchesFilter(search: ISearchFilter): boolean {
         if (this._loggingClassLowerCase === undefined) {
             this._loggingClassLowerCase = this.loggingClass.toLowerCase();
         }
-        return this._loggingClassLowerCase.includes(search) || !!this.callId?.includes(search);
+        return search.matchesFilter(this.loggingClass, this._loggingClassLowerCase) || !!(this.callId && search.matchesFilter(this.callId, this.callId));
     }
 
     private setLoggingClassData(loggingClass: string) {
