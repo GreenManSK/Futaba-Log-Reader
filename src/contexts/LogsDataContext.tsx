@@ -1,6 +1,5 @@
 import React from "react";
 import { parseLogs } from "../data/LogParser";
-import { ILogEntry } from "../data/ILogEntry";
 import { ILogSession } from "../data/ILogSession";
 
 interface ILogsDataContext {
@@ -8,12 +7,14 @@ interface ILogsDataContext {
     sessions: ILogSession[]
     readData: (content: string) => void
     setCurrentSession: (session: ILogSession) => void
+    clearData: () => void
 }
 
 export const LogsDataContext = React.createContext<ILogsDataContext>({
     sessions: [],
     readData: () => { },
-    setCurrentSession: () => { }
+    setCurrentSession: () => { },
+    clearData: () => { }
 });
 export const useLogsDataContext = () => React.useContext(LogsDataContext);
 
@@ -26,9 +27,13 @@ export const LogsDataProvider: React.FC<React.PropsWithChildren> = ({ children }
         setSessions(sessions)
         setCurrentSession(sessions[0])
     };
+    const clearData = () => {
+        setSessions([]);
+        setCurrentSession(undefined);
+    }
 
     return (
-        <LogsDataContext.Provider value={{ sessions, currentSession, readData, setCurrentSession }}>
+        <LogsDataContext.Provider value={{ sessions, currentSession, readData, setCurrentSession, clearData }}>
             {children}
         </LogsDataContext.Provider>
     );

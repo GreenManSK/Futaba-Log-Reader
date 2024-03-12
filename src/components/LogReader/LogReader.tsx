@@ -1,23 +1,28 @@
 import React from "react";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
-import { LogTable } from "./LogTable";
-import { LineLimit } from "./LineLimit";
 import { LogLevelFilter } from "./LogLevelFilter";
 import { LogClassFilter } from "./LogClassFilter";
-import _ from "lodash";
-import { ILogEntry, LogLevel } from "../../data/ILogEntry";
+import { LogLevel } from "../../data/ILogEntry";
 import { SearchFilter } from "../../data/SearchFilter";
-import { Searches } from "../Search/Searches";
+import { FilteredLogTable } from "./FilteredLogTable";
 import { SessionSelector } from "./SessionSelector";
-import { TimeRange, ITimeRange } from "./TimeRange";
+import { Stats } from "../Stats/Stats";
+import { Favourite } from "../Favourite/Favourite";
 
 const DEFAULT_LINES_LIMIT = 5000;
 const DEFAULT_LEVEL_FILTER = [LogLevel.WARNING, LogLevel.ERROR, LogLevel.UNKNOWN];
-const FILTER_DEBOUNCE = 250;
+
+enum Tabs {
+    FilteredLogs,
+    Stats,
+    Favorites
+}
 
 export const LogReader = () => {
-    const { currentSession } = useLogsDataContext();
-    const [filteredData, setFilteredData] = React.useState([] as ILogEntry[]);
+    const { currentSession, clearData } = useLogsDataContext();
+
+    const [currentTab, setCurrentTab] = React.useState(Tabs.FilteredLogs);
+    const [favourites, setFavourites] = React.useState(new Set<number>());
 
     const [lineLimit, setLineLimit] = React.useState(DEFAULT_LINES_LIMIT);
     const [levelFilter, setLevelFilter] = React.useState(new Set(DEFAULT_LEVEL_FILTER));
@@ -35,29 +40,8 @@ export const LogReader = () => {
         const start = new Date(Math.min(...dates));
         const end = new Date(Math.max(...dates));
         setTimeRange({ start, end });
+        setFavourites(new Set());
     }, [data]);
-
-    const updateFilteredData = React.useMemo(() => {
-        const update = (data: ILogEntry[] | undefined, lineLimit: number, levelFilter: Set<LogLevel>, excludedClasses: Set<string>, searches: SearchFilter[], timeRange: ITimeRange) => {
-            if (!data) {
-                return [];
-            }
-            const prefiltered = data
-                .filter(entry => levelFilter.has(entry.level) && !excludedClasses.has(entry.loggingClass) && entry.isInRange(timeRange.start, timeRange.end));
-            if (!searches.length) {
-                setFilteredData(prefiltered.slice(0, lineLimit));
-                return;
-            }
-            setFilteredData(prefiltered.filter(entry => {
-                return searches.every(search => entry.matchesFilter(search));
-            }).slice(0, lineLimit));
-        }
-        return _.debounce(update, FILTER_DEBOUNCE);
-    }, [setFilteredData]);
-
-    React.useEffect(() => {
-        updateFilteredData(data, lineLimit, levelFilter, excludedClasses, searches, timeRange);
-    }, [data, lineLimit, levelFilter, excludedClasses, searches, updateFilteredData, timeRange]);
 
     return <div>
         <div className="panel">
@@ -66,10 +50,26 @@ export const LogReader = () => {
         </div>
         <div className="main-content">
             <SessionSelector />
-            <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
-            <Searches searches={searches} setSearches={setSearches} />
-            {<LogTable data={filteredData} />}
-            <LineLimit lineLimit={lineLimit} setLineLimit={setLineLimit} />
+            <div>
+                <button onClick={() => setCurrentTab(Tabs.FilteredLogs)}>Logs</button>
+                <button onClick={() => setCurrentTab(Tabs.Stats)}>Stats</button>
+                <button onClick={() => setCurrentTab(Tabs.Favorites)}>Favorites</button>
+                <button onClick={clearData}>Clear data</button>
+            </div>
+            {currentTab === Tabs.FilteredLogs && <FilteredLogTable
+                data={data}
+                lineLimit={lineLimit}
+                setLineLimit={setLineLimit}
+                levelFilter={levelFilter}
+                excludedClasses={excludedClasses}
+                searches={searches}
+                setSearches={setSearches}
+                timeRange={timeRange}
+                setTimeRange={setTimeRange}
+                favourites={favourites}
+                setFavourites={setFavourites} />}
+            {currentTab === Tabs.Stats && <Stats data={data} excludedClasses={excludedClasses} setExcludedClasses={setExcludedClasses} />}
+            {currentTab === Tabs.Favorites && <Favourite data={data} favourites={favourites} setFavourites={setFavourites} />}
         </div>
     </div>;
 };
