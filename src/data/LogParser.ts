@@ -1,4 +1,5 @@
 import { ILogEntry, LogLevel } from "./ILogEntry";
+import { ILogSession } from "./ILogSession";
 import { ISearchFilter } from "./ISearchFilter";
 
 const CALL_ID_PREFIX = "CID[";
@@ -81,15 +82,21 @@ const parseLine = (line: string, index: number): ILogEntry => {
 
 const SESSION_SPLITTER = "The following logs are for previous session";
 
-export const parseLogs = (logs: string): ILogEntry[] => {
-    const lines = logs.split('\r');
+export const parseLogs = (logs: string): ILogSession[] => {
+    const lines = logs.split('\r').map(l => l.trim()).filter(l => l !== "");
     // First line contains info about how many logs are guaranteed
     lines.shift();
 
-    const sessionSplitterIndex = lines.findIndex(line => line.includes(SESSION_SPLITTER));
-    if (sessionSplitterIndex !== -1) {
-        lines.splice(sessionSplitterIndex);
+    const sessions: ILogSession[] = [{ name: "Last", data: [] }];
+    let currentSession = sessions[0];
+    for (const line of lines) {
+        if (line.includes(SESSION_SPLITTER)) {
+            currentSession = { name: line, data: [] };
+            sessions.push(currentSession);
+            continue;
+        }
+        currentSession.data.push(parseLine(line, currentSession.data.length));
     }
 
-    return lines.map(line => line.trim()).filter(line => line !== "").map(parseLine);
+    return sessions;
 }

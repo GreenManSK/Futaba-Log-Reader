@@ -5,9 +5,9 @@ import { LogReader } from "./LogReader/LogReader";
 
 
 export const Content = () => {
-    const { data } = useLogsDataContext();
+    const { sessions } = useLogsDataContext();
 
-    if (!data) {
+    if (!sessions.length) {
         return <FileUploader />;
 
     }

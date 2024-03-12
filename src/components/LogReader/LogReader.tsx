@@ -8,19 +8,22 @@ import _ from "lodash";
 import { ILogEntry, LogLevel } from "../../data/ILogEntry";
 import { SearchFilter } from "../../data/SearchFilter";
 import { Searches } from "../Search/Searches";
+import { SessionSelector } from "./SessionSelector";
 
 const DEFAULT_LINES_LIMIT = 5000;
 const DEFAULT_LEVEL_FILTER = [LogLevel.WARNING, LogLevel.ERROR, LogLevel.UNKNOWN];
 const FILTER_DEBOUNCE = 250;
 
 export const LogReader = () => {
-    const { data } = useLogsDataContext();
+    const { currentSession } = useLogsDataContext();
     const [filteredData, setFilteredData] = React.useState([] as ILogEntry[]);
 
     const [lineLimit, setLineLimit] = React.useState(DEFAULT_LINES_LIMIT);
     const [levelFilter, setLevelFilter] = React.useState(new Set(DEFAULT_LEVEL_FILTER));
     const [excludedClasses, setExcludedClasses] = React.useState(new Set<string>());
     const [searches, setSearches] = React.useState([new SearchFilter()]);
+
+    const data = currentSession?.data;
 
     const updateFilteredData = React.useMemo(() => {
         const update = (data: ILogEntry[] | undefined, lineLimit: number, levelFilter: Set<LogLevel>, excludedClasses: Set<string>, searches: SearchFilter[]) => {
@@ -50,6 +53,7 @@ export const LogReader = () => {
             <LogClassFilter excludedClasses={excludedClasses} setExcludedClasses={setExcludedClasses} />
         </div>
         <div className="main-content">
+            <SessionSelector />
             <Searches searches={searches} setSearches={setSearches} />
             {<LogTable data={filteredData} />}
             <LineLimit lineLimit={lineLimit} setLineLimit={setLineLimit} />

@@ -8,12 +8,12 @@ interface ILogClassFilterProps {
 
 export const LogClassFilter = (props: ILogClassFilterProps) => {
     const { excludedClasses, setExcludedClasses } = props;
-    const { data } = useLogsDataContext();
+    const { currentSession } = useLogsDataContext();
     const [classFilter, setClassFilter] = React.useState("");
 
     const classes = React.useMemo(() => {
-        return Array.from(new Set(data?.map(entry => entry.loggingClass).sort())) || [];
-    }, [data]);
+        return Array.from(new Set(currentSession?.data.map(entry => entry.loggingClass).sort())) || [];
+    }, [currentSession]);
     const filteredClasses = React.useMemo(() => {
         const lowerCaseFilter = classFilter.toLowerCase();
         return classes.filter(cls => cls.toLowerCase().includes(lowerCaseFilter));
