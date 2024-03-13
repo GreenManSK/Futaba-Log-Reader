@@ -1,0 +1,16 @@
+.file-uploader {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    h1 {
+        color: var(--white);
+        background: var(--secondaryColor);
+        width: calc(100% - 4rem);
+        padding: 2rem;
+        text-shadow: var(--textShadow);
+    }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
+import "./LineLimit.css";
 
 interface ILineLimitProps {
     lineLimit: number;
@@ -18,7 +19,7 @@ export const LineLimit = (props: ILineLimitProps) => {
 
     };
 
-    return <div>
+    return <div className="line-count">
         {`Showing at most the first ${lineLimit} lines of ${currentSession?.data.length}.`}
         <button onClick={loadMoreLines}>Load more</button>
         <button onClick={setCustomLimit}>Set custom limit</button>

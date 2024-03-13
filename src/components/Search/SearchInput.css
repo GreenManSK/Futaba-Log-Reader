@@ -1,0 +1,30 @@
+.search {
+    display: flex;
+    justify-content: right;
+    margin-top: 5px;
+
+    input {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    button {
+        background-color: var(--quaternaryColor);
+        border: 1px solid var(--primaryColor);
+    }
+
+    button:hover,
+    button:focus {
+        background-color: var(--tertiaryColor);
+        color: var(--white);
+    }
+
+    button.enabled {
+        background-color: var(--primaryColor);
+        color: var(--white);
+    }
+
+    .remove-button {
+        margin-left: .5rem;
+    }
+}

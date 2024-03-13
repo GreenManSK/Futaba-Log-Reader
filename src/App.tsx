@@ -6,14 +6,12 @@ import { DataStorageProvider } from "./contexts/DataStorageContext";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="app">
         <LogsDataProvider>
           <DataStorageProvider>
             <Content />
           </DataStorageProvider>
         </LogsDataProvider>
-      </header>
     </div>
   );
 }

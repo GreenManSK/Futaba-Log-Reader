@@ -1,5 +1,7 @@
 import React from "react";
 import { SearchFilter } from "../../data/SearchFilter";
+import { Regex, CaseSensitive, Trash2, Pause } from 'lucide-react';
+import "./SearchInput.css";
 
 interface ISearchProps {
     index: number;
@@ -24,17 +26,17 @@ export const Search = (props: ISearchProps) => {
         updateSearch(index, search);
     }, [index, search, searchText, updateSearch, isRegex, isCaseSensitive, isEnabled]);
 
-    return <div>
+    return <div className="search">
         <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="Filter by" />
-        <button onClick={() => setIsRegex(!isRegex)}>
-            {isRegex ? <strong>Regex</strong> : "Regex"}
+        <button className={isCaseSensitive ? "enabled" : "disabled"} onClick={() => setIsCaseSensitive(!isCaseSensitive)} title="Match Case">
+            <CaseSensitive size={14} />
         </button>
-        <button onClick={() => setIsCaseSensitive(!isCaseSensitive)}>
-            {isCaseSensitive ? <strong>Case Sensitive</strong> : "Case Sensitive"}
+        <button className={isRegex ? "enabled" : "disabled"} onClick={() => setIsRegex(!isRegex)} title="Use Regular Expression">
+            <Regex size={14} />
         </button>
-        <button onClick={() => setIsEnabled(!isEnabled)}>
-            {isEnabled ? <strong>Enabled</strong> : "Enabled"}
+        <button className={!isEnabled ? "enabled" : "disabled"} onClick={() => setIsEnabled(!isEnabled)} title="Pause matching">
+            <Pause size={14} />
         </button>
-        <button onClick={() => props.removeSearch(index)}>Remove</button>
+        <button className="remove-button" onClick={() => props.removeSearch(index)} title="Remove search">Remove <Trash2 size={14} /></button>
     </div>
 }

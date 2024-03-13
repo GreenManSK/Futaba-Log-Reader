@@ -1,5 +1,16 @@
+:root {
+  --primaryColor: #294b29;
+  --secondaryColor: #50623A;
+  --tertiaryColor: #789461;
+  --quaternaryColor: #DBE7C9;
+  --white: #fff;
+  --textShadow: 0 1px 0 rgba(0, 0, 0, .1);
+  --panelSize: 200px;
+}
+
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +21,15 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+button {
+  background-color: var(--quaternaryColor);
+  border: 1px solid var(--primaryColor);
+}
+
+button:hover,
+button:focus {
+  background-color: var(--tertiaryColor);
+  color: var(--white);
 }

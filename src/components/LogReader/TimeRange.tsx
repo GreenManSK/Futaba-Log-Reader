@@ -1,4 +1,5 @@
 import React from "react";
+import "./TimeRange.css";
 
 export type ITimeRange = { start: Date, end: Date };
 
@@ -28,10 +29,10 @@ export const TimeRange = (props: ITimeRangeProps) => {
         setTimeRange({ start, end });
     }, [start, end, setTimeRange]);
 
-    return <div>
-        Showing logs from
+    return <div className="time-range">
+        Showing logs from<br />
         <TimePicker time={start} setTime={setStart} />
-        to
+        &nbsp;to&nbsp;
         <TimePicker time={end} setTime={setEnd} />
     </div>
 }

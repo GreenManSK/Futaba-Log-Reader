@@ -1,0 +1,34 @@
+.class-search {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.classes-list {
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.classes-panel .buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: .25rem;
+}
+
+.classes-panel:hover,
+.classes-panel:focus,
+.classes-panel:active {
+    .classes-list {
+        overflow-x: visible;
+        position: relative;
+        z-index: 1000;
+        background-color: var(--white);
+        width: calc(3 * var(--panelSize));
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+        .class-name {
+            z-index: 1000;
+            background-color: var(--white);
+        }
+    }
+}

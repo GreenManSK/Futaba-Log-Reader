@@ -1,4 +1,5 @@
 import React from "react";
+import './LogReader.css';
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
 import { LogLevelFilter } from "./LogLevelFilter";
 import { LogClassFilter } from "./LogClassFilter";
@@ -46,7 +47,10 @@ export const LogReader = () => {
         setTimeRange({ start, end });
     }, [data]);
 
-    return <div>
+    return <div className="log-reader">
+        <header id="header">
+            <h1>Log Reader</h1>
+        </header>
         <div className="panel">
             <LogLevelFilter levelFilter={levelFilter} setLevelFilter={setLevelFilter} />
             <LogClassFilter excludedClasses={excludedClasses} setExcludedClasses={setExcludedClasses} />

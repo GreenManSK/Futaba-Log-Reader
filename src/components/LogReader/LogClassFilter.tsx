@@ -1,4 +1,5 @@
 import React from "react";
+import './LogClassFilter.css';
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
 
 interface ILogClassFilterProps {
@@ -40,14 +41,22 @@ export const LogClassFilter = (props: ILogClassFilterProps) => {
         setExcludedClasses(newSet);
     }
 
-    return <>
+    return <div className="box classes-panel">
         <h2>Logging class</h2>
-        <button onClick={deselectAll}>Clear all</button>
-        <button onClick={selectAll}>Select all</button>
-        <input type="text" value={classFilter} onChange={e => setClassFilter(e.target.value)} placeholder="Select class" />
-        {filteredClasses.map(cls => (<div key={cls}>
-            <input type="checkbox" checked={!excludedClasses.has(cls)} onChange={() => onChange(cls)} />
-            {cls}
-        </div>))}
-    </>;
+        <div className="buttons">
+            <button onClick={deselectAll}>Clear all</button>
+            <button onClick={selectAll}>Select all</button>
+        </div>
+        <input className="class-search" type="text" value={classFilter} onChange={e => setClassFilter(e.target.value)} placeholder="Select class" />
+        <div className="classes-list">
+            <ul className="checkbox-list">
+                {filteredClasses.map(cls => (<li key={cls}>
+                    <label>
+                        <input type="checkbox" checked={!excludedClasses.has(cls)} onChange={() => onChange(cls)} />
+                        <span className="class-name">{cls}</span>
+                    </label>
+                </li>))}
+            </ul>
+        </div>
+    </div>;
 };

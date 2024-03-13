@@ -1,0 +1,57 @@
+.log-reader {
+    display: grid;
+    grid-template-columns: 0 var(--panelSize) auto 0;
+    column-gap: 20px;
+    row-gap: 10px;
+    grid-template-areas:
+        "header header header header"
+        ". panel main-content .";
+
+    header {
+        grid-area: header;
+
+        h1 {
+            color: var(--white);
+            background: var(--secondaryColor);
+            margin: 0;
+            padding: 1rem;
+            text-shadow: var(--textShadow);
+        }
+    }
+
+    .panel {
+        grid-area: panel;
+
+        h2 {
+            color: var(--secondaryColor);
+            text-shadow: var(--textShadow);
+            font-size: 20px;
+            margin: 0 0 .5rem;
+            padding: 0;
+        }
+
+        .box {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li label {
+                display: flex;
+                cursor: pointer;
+
+                input {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .main-content {
+        grid-area: main-content;
+    }
+}

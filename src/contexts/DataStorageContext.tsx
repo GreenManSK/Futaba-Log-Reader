@@ -2,6 +2,7 @@ import React from "react";
 import { LogLevel } from "../data/ILogEntry";
 import { ISearchData, SearchFilter } from "../data/SearchFilter";
 import { useLogsDataContext } from "./LogsDataContext";
+import { set } from "lodash";
 
 interface IStoredFileData {
     hash: string,
@@ -40,6 +41,7 @@ export const DataStorageContext = React.createContext<IDataStorageContext>({
 export const useDataStorageContext = () => React.useContext(DataStorageContext);
 
 const STORAGE_KEY = "LOGS_DATA_STORAGE";
+const LAST_SAVE_KEY = "LAST_SAVE";
 const DATA_STORE_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 const DEFAULT_LEVEL_FILTER = [LogLevel.WARNING, LogLevel.ERROR, LogLevel.UNKNOWN];
 
@@ -50,6 +52,7 @@ const clearOldData = (data: IStoredFileData) => {
 export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { currentSession, dataHash } = useLogsDataContext();
     const storedData = React.useRef<IStoredFileData[]>([]);
+    const lastSave = React.useRef("0");
     const loadedDataHash = React.useRef<string | undefined>();
     const loadedSessionName = React.useRef<string | undefined>();
 
@@ -58,7 +61,10 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
     const [excludedClasses, setExcludedClasses] = React.useState(new Set<string>());
     const [searches, setSearches] = React.useState([new SearchFilter()]);
 
-    React.useEffect(() => {
+    const loadNewestData = React.useCallback(() => {
+        if (lastSave.current === localStorage.getItem(LAST_SAVE_KEY)) {
+            return;
+        }
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
             storedData.current = JSON.parse(stored).filter(clearOldData);
@@ -66,7 +72,15 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
     }, []);
 
     React.useEffect(() => {
+        loadNewestData();
+    }, [loadNewestData]);
+
+    React.useEffect(() => {
         if (!dataHash) {
+            setLevelFilter(new Set(DEFAULT_LEVEL_FILTER));
+            setExcludedClasses(new Set<string>());
+            setSearches([new SearchFilter()]);
+            setFavourites(new Set<number>());
             return;
         }
         const stored = storedData.current.find(data => data.hash === dataHash);
@@ -84,6 +98,8 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
         if (!dataHash || dataHash !== loadedDataHash.current || currentSession?.name !== loadedSessionName.current) {
             return;
         }
+        // Load data from storage to not override data saved by other tabs
+        loadNewestData();
         const storedIndex = storedData.current.findIndex(data => data.hash === dataHash);
         const oldFavourites = storedData.current[storedIndex]?.favourites ?? [];
         const latestData = {
@@ -107,6 +123,8 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
             storedData.current.push(latestData);
         }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData.current));
+        lastSave.current = Date.now().toString();
+        localStorage.setItem(LAST_SAVE_KEY, lastSave.current);
     }, [dataHash, currentSession, levelFilter, excludedClasses, searches, favourites]);
 
 

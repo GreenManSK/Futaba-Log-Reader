@@ -6,6 +6,7 @@ import _ from "lodash";
 import { Searches } from "../Search/Searches";
 import { LogTable } from "./LogTable";
 import { LineLimit } from "./LineLimit";
+import "./FilteredLogTable.css";
 
 interface IFilteredLogTableProps {
     data?: ILogEntry[];
@@ -65,8 +66,10 @@ export const FilteredLogTable = (props: IFilteredLogTableProps) => {
     }, [data, lineLimit, levelFilter, excludedClasses, searches, updateFilteredData, timeRange]);
 
     return <>
-        <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
-        <Searches searches={searches} setSearches={setSearches} />
+        <div className="table-tools">
+            <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
+            <Searches searches={searches} setSearches={setSearches} />
+        </div>
         <LogTable data={filteredData} favourites={favourites} setFavourites={setFavourites} />
         <LineLimit lineLimit={lineLimit} setLineLimit={setLineLimit} />
     </>

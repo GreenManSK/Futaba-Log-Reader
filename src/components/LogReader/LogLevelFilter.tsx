@@ -20,11 +20,15 @@ export const LogLevelFilter = (props: ILogLevelFilterProps) => {
         setLevelFilter(newSet);
     }
 
-    return <>
+    return <div className="box">
         <h2>Logging Level</h2>
-        {LEVELS.map(level => (<div key={level}>
-            <input type="checkbox" checked={levelFilter.has(level)} onChange={() => onChange(level)} />
-            {LogLevel[level]}
-        </div>))}
-    </>;
+        <ul className="checkbox-list">
+            {LEVELS.map(level => (<li key={level}>
+                <label>
+                    <input type="checkbox" checked={levelFilter.has(level)} onChange={() => onChange(level)} />
+                    {LogLevel[level]}
+                </label>
+            </li>))}
+        </ul>
+    </div>;
 };

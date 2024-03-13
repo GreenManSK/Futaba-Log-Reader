@@ -1,5 +1,6 @@
 import React from "react";
 import { useLogsDataContext } from "../contexts/LogsDataContext";
+import './FileUploader.css';
 
 export const FileUploader = () => {
 
@@ -23,7 +24,8 @@ export const FileUploader = () => {
     }
 
     return (
-        <div>
+        <div className="file-uploader">
+            <h1>Upload or drag-n-drop your logs</h1>
             <input type="file" onChange={handleFileChange} />
         </div>
     );

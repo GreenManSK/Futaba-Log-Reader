@@ -1,6 +1,7 @@
 import React from "react";
 import { SearchFilter } from "../../data/SearchFilter";
 import { Search } from "./SearchInput";
+import "./Searches.css";
 
 interface ISearchProps {
     searches: SearchFilter[];
@@ -25,10 +26,10 @@ export const Searches = (props: ISearchProps) => {
         setSearches(newSearches);
     }, [searches, setSearches]);
 
-    return <div>
+    return <div className="searches">
+        <button onClick={addSearch}>Add Search</button>
         {searches.map((search, index) => (
             <Search key={search.id} index={index} search={search} updateSearch={updateSearch} removeSearch={removeSearch(index)} />
         ))}
-        <button onClick={addSearch}>Add Search</button>
     </div>
 }
