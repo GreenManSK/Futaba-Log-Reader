@@ -1,5 +1,12 @@
 import { ISearchFilter } from "./ISearchFilter";
 
+export type ISearchData = {
+    text: string;
+    enabled: boolean;
+    isCaseSensitive: boolean;
+    isRegex: boolean;
+}
+
 export class SearchFilter implements ISearchFilter {
     private static _idCounter: number = 0;
 
@@ -14,8 +21,24 @@ export class SearchFilter implements ISearchFilter {
 
     private _id: number;
 
-    constructor() {
+    constructor(searchData?: ISearchData) {
         this._id = SearchFilter._idCounter++;
+        if (searchData) {
+            this.enabled = searchData.enabled;
+            this._text = searchData.text;
+            this._isCaseSensitive = searchData.isCaseSensitive;
+            this._isRegex = searchData.isRegex;
+            this.prepareSearch();
+        }
+    }
+
+    public getData(): ISearchData {
+        return {
+            text: this._text,
+            enabled: this.enabled,
+            isCaseSensitive: this._isCaseSensitive,
+            isRegex: this._isRegex
+        };
     }
 
     public matchesFilter(text: string, lowerCaseText?: string | undefined): boolean {

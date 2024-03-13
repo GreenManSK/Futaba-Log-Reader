@@ -2,15 +2,13 @@ import React from "react";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
 import { LogLevelFilter } from "./LogLevelFilter";
 import { LogClassFilter } from "./LogClassFilter";
-import { LogLevel } from "../../data/ILogEntry";
-import { SearchFilter } from "../../data/SearchFilter";
 import { FilteredLogTable } from "./FilteredLogTable";
 import { SessionSelector } from "./SessionSelector";
 import { Stats } from "../Stats/Stats";
 import { Favourite } from "../Favourite/Favourite";
+import { useDataStorageContext } from "../../contexts/DataStorageContext";
 
 const DEFAULT_LINES_LIMIT = 5000;
-const DEFAULT_LEVEL_FILTER = [LogLevel.WARNING, LogLevel.ERROR, LogLevel.UNKNOWN];
 
 enum Tabs {
     FilteredLogs,
@@ -22,13 +20,19 @@ export const LogReader = () => {
     const { currentSession, clearData } = useLogsDataContext();
 
     const [currentTab, setCurrentTab] = React.useState(Tabs.FilteredLogs);
-    const [favourites, setFavourites] = React.useState(new Set<number>());
-
     const [lineLimit, setLineLimit] = React.useState(DEFAULT_LINES_LIMIT);
-    const [levelFilter, setLevelFilter] = React.useState(new Set(DEFAULT_LEVEL_FILTER));
-    const [excludedClasses, setExcludedClasses] = React.useState(new Set<string>());
-    const [searches, setSearches] = React.useState([new SearchFilter()]);
     const [timeRange, setTimeRange] = React.useState({ start: new Date(), end: new Date() });
+
+    const {
+        levelFilter,
+        setLevelFilter,
+        excludedClasses,
+        setExcludedClasses,
+        searches,
+        setSearches,
+        favourites,
+        setFavourites
+    } = useDataStorageContext();
 
     const data = currentSession?.data;
 
@@ -40,7 +44,6 @@ export const LogReader = () => {
         const start = new Date(Math.min(...dates));
         const end = new Date(Math.max(...dates));
         setTimeRange({ start, end });
-        setFavourites(new Set());
     }, [data]);
 
     return <div>

@@ -1,6 +1,7 @@
 import { ILogEntry, LogLevel } from "./ILogEntry";
 import { ILogSession } from "./ILogSession";
 import { ISearchFilter } from "./ISearchFilter";
+import { md5 } from "js-md5";
 
 const CALL_ID_PREFIX = "CID[";
 class LogEntry implements ILogEntry {
@@ -31,7 +32,7 @@ class LogEntry implements ILogEntry {
 
     public isInRange(start: Date, end: Date): boolean {
         return this.date >= start && this.date <= end;
-    }   
+    }
 
     private messageMatchesFilter(search: ISearchFilter): boolean {
         if (this._messageLoweCase === undefined) {
@@ -88,7 +89,10 @@ const parseLine = (line: string, index: number): ILogEntry => {
 
 const SESSION_SPLITTER = "The following logs are for previous session";
 
-export const parseLogs = (logs: string): ILogSession[] => {
+export const parseLogs = (logs: string): {
+    sessions: ILogSession[],
+    hash: string,
+} => {
     const lines = logs.split('\r').map(l => l.trim()).filter(l => l !== "");
     // First line contains info about how many logs are guaranteed
     lines.shift();
@@ -104,5 +108,8 @@ export const parseLogs = (logs: string): ILogSession[] => {
         currentSession.data.push(parseLine(line, currentSession.data.length));
     }
 
-    return sessions;
+    return {
+        sessions,
+        hash: md5(logs)
+    };
 }
