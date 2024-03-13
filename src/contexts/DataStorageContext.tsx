@@ -1,7 +1,6 @@
 import React from "react";
 import { LogLevel } from "../data/ILogEntry";
 import { ISearchData, SearchFilter } from "../data/SearchFilter";
-import { ITimeRange } from "../components/LogReader/TimeRange";
 import { useLogsDataContext } from "./LogsDataContext";
 
 interface IStoredFileData {
