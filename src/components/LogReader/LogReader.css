@@ -12,7 +12,8 @@
 
         h1 {
             color: var(--white);
-            background: var(--secondaryColor);
+            background: var(--secondaryColor) url("/public/logo.png") no-repeat right center;
+            background-size: contain;
             margin: 0;
             padding: 1rem;
             text-shadow: var(--textShadow);
