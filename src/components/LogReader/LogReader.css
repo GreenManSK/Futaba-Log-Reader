@@ -54,4 +54,23 @@
     .main-content {
         grid-area: main-content;
     }
+
+    .tabs-buttons {
+        padding: .5rem 0;
+        display: flex;
+        justify-content: left;
+        gap: 1rem;
+
+        button {
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button.active {
+            color: var(--white);
+            background: var(--secondaryColor);
+            text-shadow: var(--textShadow);
+        }
+    }
 }

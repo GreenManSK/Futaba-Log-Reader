@@ -13,7 +13,7 @@ export const LogClassFilter = (props: ILogClassFilterProps) => {
     const [classFilter, setClassFilter] = React.useState("");
 
     const classes = React.useMemo(() => {
-        return Array.from(new Set(currentSession?.data.map(entry => entry.loggingClass).sort())) || [];
+        return Array.from(new Set(currentSession?.data.map(entry => entry.loggingClass).sort((a, b) => a.localeCompare(b)))) || [];
     }, [currentSession]);
     const filteredClasses = React.useMemo(() => {
         const lowerCaseFilter = classFilter.toLowerCase();
@@ -42,7 +42,7 @@ export const LogClassFilter = (props: ILogClassFilterProps) => {
     }
 
     return <div className="box classes-panel">
-        <h2>Logging class</h2>
+        <h2>Logging Class</h2>
         <div className="buttons">
             <button onClick={deselectAll}>Clear all</button>
             <button onClick={selectAll}>Select all</button>

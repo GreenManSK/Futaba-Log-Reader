@@ -1,5 +1,6 @@
 import React from "react";
 import { ILogEntry, LogLevel } from "../../data/ILogEntry";
+import "./Stats.css";
 
 enum SortType {
     Alphabetical,
@@ -117,35 +118,52 @@ export const Stats = (props: IStatsProps) => {
         setExcludedClasses(newSet);
     }, [excludedClasses, setExcludedClasses]);
 
-    return <>
-        <h2>Stats by log type</h2>
-        <strong>Lines:</strong> {typeStats.total ?? 0}<br />
-        <strong>Info:</strong> {typeStats[LogLevel.INFO] ?? 0}<br />
-        <strong>Warning:</strong> {typeStats[LogLevel.WARNING] ?? 0}<br />
-        <strong>Error:</strong> {typeStats[LogLevel.ERROR] ?? 0}<br />
-        <strong>Debug:</strong> {typeStats[LogLevel.DEBUG] ?? 0}<br />
-        <strong>Unknown:</strong> {typeStats[LogLevel.UNKNOWN] ?? 0}<br />
-
-        <h2>Stats by log class</h2>
-        Sort by <select value={sortType} onChange={e => setSortType(+e.target.value)}>
-            <option value={SortType.Alphabetical}>Alphabetical</option>
-            <option value={SortType.AllLogsCount}>All logs count</option>
-            <option value={SortType.InfoCount}>Info count</option>
-            <option value={SortType.WarningCount}>Warning count</option>
-            <option value={SortType.ErrorCount}>Error count</option>
-            <option value={SortType.DebugCount}>Debug count</option>
-            <option value={SortType.UnknownCount}>Unknown count</option>
-        </select>
-        <ul>
-            {sortedClassStats.map((stat) => <ClassStats
-                key={stat.name}
-                stats={stat}
-                totalStats={typeStats}
-                onExcludedClassChange={onExcludedClassChange}
-                isExcluded={excludedClasses.has(stat.name)}
-            />)}
+    return <div className="stats">
+        <h2>Stats by Logging Level</h2>
+        <ul className="level-stats">
+            <li><span className="badge count">All Logs:</span> {typeStats.total ?? 0}</li>
+            <li><span className="badge info">Info:</span> {typeStats[LogLevel.INFO] ?? 0}</li>
+            <li><span className="badge warning">Warning:</span> {typeStats[LogLevel.WARNING] ?? 0}</li>
+            <li><span className="badge error">Error:</span> {typeStats[LogLevel.ERROR] ?? 0}</li>
+            <li><span className="badge debug">Debug:</span> {typeStats[LogLevel.DEBUG] ?? 0}</li>
+            <li><span className="badge unknown">Unknown:</span> {typeStats[LogLevel.UNKNOWN] ?? 0}</li>
         </ul>
-    </>
+
+        <h2>Stats by Logging Class</h2>
+        <div>
+            Sort by <select value={sortType} onChange={e => setSortType(+e.target.value)}>
+                <option value={SortType.Alphabetical}>Alphabetical</option>
+                <option value={SortType.AllLogsCount}>All logs count</option>
+                <option value={SortType.InfoCount}>Info count</option>
+                <option value={SortType.WarningCount}>Warning count</option>
+                <option value={SortType.ErrorCount}>Error count</option>
+                <option value={SortType.DebugCount}>Debug count</option>
+                <option value={SortType.UnknownCount}>Unknown count</option>
+            </select>
+        </div>
+        <table className="class-stats">
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th className="stats-header">All</th>
+                    <th className="stats-header">Info</th>
+                    <th className="stats-header">Warning</th>
+                    <th className="stats-header">Error</th>
+                    <th className="stats-header">Debug</th>
+                    <th className="stats-header">Unknown</th>
+                </tr>
+            </thead>
+            <tbody>
+                {sortedClassStats.map((stat) => <ClassStats
+                    key={stat.name}
+                    stats={stat}
+                    totalStats={typeStats}
+                    onExcludedClassChange={onExcludedClassChange}
+                    isExcluded={excludedClasses.has(stat.name)}
+                />)}
+            </tbody>
+        </table>
+    </div>
 }
 
 const getPercentage = (value: number, total: number) => {
@@ -157,13 +175,25 @@ const getPercentage = (value: number, total: number) => {
 
 const ClassStats = (props: IClassStatsProps) => {
     const { stats, totalStats, isExcluded, onExcludedClassChange } = props;
-    return <li key={stats.name}>
-        <input type="checkbox" checked={!isExcluded} onChange={() => onExcludedClassChange(stats.name)} />
-        <strong>{stats.name}</strong> - ({stats.total})
-        (i{stats[LogLevel.INFO]} - {getPercentage(stats[LogLevel.INFO], totalStats[LogLevel.INFO])}%)
-        (w{stats[LogLevel.WARNING]} - {getPercentage(stats[LogLevel.WARNING], totalStats[LogLevel.WARNING])}%)
-        (e{stats[LogLevel.ERROR]} - {getPercentage(stats[LogLevel.ERROR], totalStats[LogLevel.ERROR])}%)
-        (d{stats[LogLevel.DEBUG]} - {getPercentage(stats[LogLevel.DEBUG], totalStats[LogLevel.DEBUG])}%)
-        (u{stats[LogLevel.UNKNOWN]} - {getPercentage(stats[LogLevel.UNKNOWN], totalStats[LogLevel.UNKNOWN])}%)
-    </li>
+    return <tr key={stats.name}>
+        <td className="class-name"><label><input type="checkbox" checked={!isExcluded} onChange={() => onExcludedClassChange(stats.name)} /> {stats.name}</label></td>
+        <td>
+            <span className="badge count">{stats.total}</span>
+        </td>
+        <td>
+            <span className="badge info">{stats[LogLevel.INFO]} ({getPercentage(stats[LogLevel.INFO], totalStats[LogLevel.INFO])}%)</span>
+        </td>
+        <td>
+            <span className="badge warning">{stats[LogLevel.WARNING]} ({getPercentage(stats[LogLevel.WARNING], totalStats[LogLevel.WARNING])}%)</span>
+        </td>
+        <td>
+            <span className="badge error">{stats[LogLevel.ERROR]} ({getPercentage(stats[LogLevel.ERROR], totalStats[LogLevel.ERROR])}%)</span>
+        </td>
+        <td>
+            <span className="badge debug">{stats[LogLevel.DEBUG]} ({getPercentage(stats[LogLevel.DEBUG], totalStats[LogLevel.DEBUG])}%)</span>
+        </td>
+        <td>
+            <span className="badge unknown">{stats[LogLevel.UNKNOWN]} ({getPercentage(stats[LogLevel.UNKNOWN], totalStats[LogLevel.UNKNOWN])}%)</span>
+        </td>
+    </tr>
 };

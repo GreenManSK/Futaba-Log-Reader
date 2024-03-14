@@ -1,0 +1,75 @@
+.stats {
+    h2 {
+        color: var(--secondaryColor);
+        text-shadow: var(--textShadow);
+        margin: 1rem 0 .5rem;
+        padding: 0;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+            margin-bottom: .2rem;
+        }
+    }
+
+    .badge {
+        background: rgb(255, 192, 203);
+        display: inline-block;
+        border-radius: 5px;
+        padding: 2px 5px;
+    }
+
+    .badge.count {
+        background: rgb(255, 192, 203)
+    }
+
+    .badge.info {
+        background: rgba(0, 0, 255, 0.2)
+    }
+
+    .badge.warning {
+        background: rgba(255, 255, 0, 0.4)
+    }
+
+    .badge.error {
+        background: rgba(255, 0, 0, 0.5);
+    }
+
+    .badge.debug {
+        background: rgba(0, 255, 0, 0.4)
+    }
+
+    .badge.unknown {
+        background: rgba(0, 0, 0, 0.2)
+    }
+
+    .level-stats {
+        .badge {
+            font-weight: bold;
+        }
+    }
+
+    table.class-stats {
+        text-align: right;
+
+        th {
+            overflow-wrap: break-word;
+        }
+
+        th.stats-header {
+            text-align: center;
+            overflow-wrap: normal;
+        }
+
+        td {
+            padding: .2rem 0;
+        }
+
+        td.class-name {
+            font-weight: bold;
+        }
+    }
+}

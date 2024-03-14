@@ -1,26 +1,4 @@
 table.logs {
-    font-size: 14px;
-    text-align: left;
-    border-collapse: collapse;
-    width: 100%;
-
-    tr {
-        --bgOpacityBase: 0;
-        --increase: 0.05;
-        --bgOpacity: var(--bgOpacityBase);
-        border-top: .5px solid #d3d3d3;
-        background-color: rgba(0, 0, 0, var(--bgOpacity));
-    }
-
-    td,
-    th {
-        padding: 0 0.5rem;
-        vertical-align: top;
-    }
-
-    th {
-        color: var(--secondaryColor);
-    }
 
     td.date,
     td.number {
@@ -33,7 +11,6 @@ table.logs {
     }
 
     td.message {
-        /* max-width: 50vw; */
         white-space: pre-wrap;
         overflow-wrap: break-word;
         word-break: break-word;

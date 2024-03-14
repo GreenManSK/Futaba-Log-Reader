@@ -57,11 +57,11 @@ export const LogReader = () => {
         </div>
         <div className="main-content">
             <SessionSelector />
-            <div>
-                <button onClick={() => setCurrentTab(Tabs.FilteredLogs)}>Logs</button>
-                <button onClick={() => setCurrentTab(Tabs.Stats)}>Stats</button>
-                <button onClick={() => setCurrentTab(Tabs.Favorites)}>Favorites</button>
-                <button onClick={clearData}>Clear data</button>
+            <div className="tabs-buttons">
+                <button className={currentTab === Tabs.FilteredLogs ? "active" : ""} onClick={() => setCurrentTab(Tabs.FilteredLogs)}>Logs</button>
+                <button className={currentTab === Tabs.Stats ? "active" : ""} onClick={() => setCurrentTab(Tabs.Stats)}>Stats</button>
+                <button className={currentTab === Tabs.Favorites ? "active" : ""} onClick={() => setCurrentTab(Tabs.Favorites)}>Favorites</button>
+                <button onClick={clearData}>Unload file</button>
             </div>
             {currentTab === Tabs.FilteredLogs && <FilteredLogTable
                 data={data}

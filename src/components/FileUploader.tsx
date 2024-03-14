@@ -14,9 +14,9 @@ export const FileUploader = () => {
                 const result = e.target?.result;
                 if (!result) return;
                 if (typeof result === 'string') {
-                    readData(result);
+                    readData(file.name, result);
                 } else {
-                    readData((new TextDecoder()).decode(result));
+                    readData(file.name, (new TextDecoder()).decode(result));
                 }
             };
             fileReader.readAsText(file);
