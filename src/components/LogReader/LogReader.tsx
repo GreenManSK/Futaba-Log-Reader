@@ -8,6 +8,7 @@ import { SessionSelector } from "./SessionSelector";
 import { Stats } from "../Stats/Stats";
 import { Favourite } from "../Favourite/Favourite";
 import { useDataStorageContext } from "../../contexts/DataStorageContext";
+import { GoToTopButton } from "./GoToTopButton";
 
 const DEFAULT_LINES_LIMIT = 5000;
 
@@ -77,6 +78,7 @@ export const LogReader = () => {
                 setFavourites={setFavourites} />}
             {currentTab === Tabs.Stats && <Stats data={data} excludedClasses={excludedClasses} setExcludedClasses={setExcludedClasses} />}
             {currentTab === Tabs.Favorites && <Favourite data={data} favourites={favourites} setFavourites={setFavourites} />}
+            <GoToTopButton />
         </div>
     </div>;
 };
