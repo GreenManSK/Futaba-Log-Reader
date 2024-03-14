@@ -3,7 +3,6 @@ import { useLogsDataContext } from "../contexts/LogsDataContext";
 import './FileUploader.css';
 
 export const FileUploader = () => {
-
     const { readData } = useLogsDataContext();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
