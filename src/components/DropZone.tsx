@@ -40,7 +40,7 @@ export const DropZone: React.FC<React.PropsWithChildren> = ({ children }) => {
     >
         {children}
         <div className="zone" onDrop={handleDrop} onDragOver={handleDragOver}>
-            <img src="/upload.gif" alt="Futaba Hacking" />
+            <img src="upload.gif" alt="Futaba Hacking" />
         </div>
     </div>
 }
