@@ -88,7 +88,11 @@ export class SearchFilter implements ISearchFilter {
 
     private prepareSearch() {
         if (this._isRegex) {
+            try {
             this._searchRegex = new RegExp(this._text, this._isCaseSensitive ? "g" : "gi");
+            } catch (_) {
+                // Invalid regex, we won't use it
+            }
             return;
         }
         this._searchText = this._isCaseSensitive ? this._text : this._text.toLowerCase();

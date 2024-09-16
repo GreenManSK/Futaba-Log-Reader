@@ -3,28 +3,42 @@
     justify-content: right;
     margin-top: 5px;
 
+    --background: var(--quaternaryColor);
+    --border: var(--primaryColor);
+    --focus: var(--tertiaryColor);
+
     input {
         width: 100%;
         max-width: 350px;
     }
 
     button {
-        background-color: var(--quaternaryColor);
-        border: 1px solid var(--primaryColor);
+        background-color: var(--background);
+        border: 1px solid var(--border);
     }
 
     button:hover,
     button:focus {
-        background-color: var(--tertiaryColor);
+        background-color: var(--focus);
         color: var(--white);
     }
 
     button.enabled {
-        background-color: var(--primaryColor);
+        background-color: var(--border);
         color: var(--white);
     }
 
     .remove-button {
         margin-left: .5rem;
+    }
+
+    &.invalid {
+        --background: var(--errorQuaternaryColor);
+        --border: var(--errorPrimaryColor);
+        --focus: var(--errorTertiaryColor);
+
+        input {
+            border: 1px solid var(--border);
+        }
     }
 }
