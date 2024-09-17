@@ -25,7 +25,62 @@ const isMatchPreset = (preset: IPreset, name: string, category: string) => {
 }
 
 const STORAGE_KEY = "PRESETS";
-const DEFAULT_PRESETS: IPreset[] = [];
+const DEFAULT_PRESETS: IPreset[] = [
+    {
+        category: "Modern Stage",
+        name: "Speaker/Voice level issues",
+        data: {
+            levelFilter: [LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARNING, LogLevel.ERROR],
+            searchData: [{
+                text: "(voice level|onActiveSpeakersChanged)",
+                enabled: true,
+                isCaseSensitive: false,
+                isRegex: true
+            }, {
+                text: "roster",
+                enabled: false,
+                isCaseSensitive: false,
+                isRegex: false
+            }, {
+                text: "callsmonitor",
+                enabled: false,
+                isCaseSensitive: false,
+                isRegex: false
+            }, {
+                text: "calls]",
+                enabled: false,
+                isCaseSensitive: false,
+                isRegex: false
+            }],
+            includedClasses: [
+                "CallParticipantsVoiceLevelsContextProvider[calls]",
+                "CallParticipantsVoiceLevelsContextProvider[callsmonitor]",
+                "CallParticipantsVoiceLevelsContextProvider[roster]",
+                "ModernGridLayout[calls]",
+                "ModernGridLayout[callsmonitor]"
+            ]
+        }
+    },
+    {
+        category: "Proximity",
+        name: "Is somebody hidden by same room?",
+        data: {
+            levelFilter: [LogLevel.INFO],
+            searchData: [{
+                text: "isInSameRoom updated: true",
+                enabled: true,
+                isCaseSensitive: false,
+                isRegex: false
+            }, {
+                text: "isInSameRoom",
+                enabled: false,
+                isCaseSensitive: false,
+                isRegex: false
+            }],
+            includedClasses: []
+        }
+    }
+];
 
 export const PresetsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [presets, setPresets] = React.useState<IPreset[]>(DEFAULT_PRESETS);
