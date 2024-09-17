@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Futaba-Log-Reader/static/css/main.7e5bf047.css",
-    "main.js": "/Futaba-Log-Reader/static/js/main.0702e76f.js",
+    "main.js": "/Futaba-Log-Reader/static/js/main.9d128c47.js",
     "static/js/453.6ce79f26.chunk.js": "/Futaba-Log-Reader/static/js/453.6ce79f26.chunk.js",
     "static/media/futaba.webp": "/Futaba-Log-Reader/static/media/futaba.245b4370529466a4bf46.webp",
     "static/media/logo.png": "/Futaba-Log-Reader/static/media/logo.5105d774f7bb408143be.png",
     "index.html": "/Futaba-Log-Reader/index.html",
     "main.7e5bf047.css.map": "/Futaba-Log-Reader/static/css/main.7e5bf047.css.map",
-    "main.0702e76f.js.map": "/Futaba-Log-Reader/static/js/main.0702e76f.js.map",
+    "main.9d128c47.js.map": "/Futaba-Log-Reader/static/js/main.9d128c47.js.map",
     "453.6ce79f26.chunk.js.map": "/Futaba-Log-Reader/static/js/453.6ce79f26.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7e5bf047.css",
-    "static/js/main.0702e76f.js"
+    "static/js/main.9d128c47.js"
   ]
 }
