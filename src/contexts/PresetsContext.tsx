@@ -77,7 +77,9 @@ const DEFAULT_PRESETS: IPreset[] = [
                 isCaseSensitive: false,
                 isRegex: false
             }],
-            includedClasses: []
+            includedClasses: [
+                "VideoLayoutItemHandler"
+            ]
         }
     }
 ];
