@@ -7,13 +7,15 @@ interface IPresetsContext {
     add: (preset: IPreset) => void;
     update: (oldPreset: IPreset, newPreset: IPreset) => void;
     remove: (preset: IPreset) => void;
+    import: (presets: IPreset[]) => void;
 }
 
 export const PresetsContext = React.createContext<IPresetsContext>({
     presets: [],
     add: () => { },
     update: () => { },
-    remove: () => { }
+    remove: () => { },
+    import: () => { }
 });
 
 export const usePresetsContext = () => React.useContext(PresetsContext);
@@ -56,13 +58,25 @@ export const PresetsProvider: React.FC<React.PropsWithChildren> = ({ children })
         updatePresets(newPresets);
     }, [presets, updatePresets, add]);
 
+    const importPresets = React.useCallback((newPresets: IPreset[]) => {
+        const mergedPresets = newPresets.reduce((acc, preset) => {
+            const index = acc.findIndex(p => isMatchPreset(p, preset.name, preset.category));
+            if (index === -1) {
+                return [...acc, preset];
+            }
+            acc[index] = preset;
+            return acc;
+        }, presets);
+        updatePresets(mergedPresets);
+    }, [presets, updatePresets]);
+
     const deletePreset = React.useCallback((preset: IPreset) => {
         const newPresets = presets.filter(p => !isMatchPreset(p, preset.name, preset.category));
         updatePresets(newPresets);
     }, [presets, updatePresets]);
 
     return (
-        <PresetsContext.Provider value={{ presets, add, update, remove: deletePreset }}>
+        <PresetsContext.Provider value={{ presets, add, update, remove: deletePreset, import: importPresets }}>
             {children}
         </PresetsContext.Provider>
     );

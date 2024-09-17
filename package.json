@@ -11,6 +11,7 @@
     "@types/node": "^20.11.25",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
+    "file-saver": "^2.0.5",
     "js-md5": "^0.8.3",
     "lodash": "^4.17.21",
     "lucide-react": "^0.356.0",
@@ -25,8 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +53,7 @@
     }
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/lodash": "^4.14.202",
     "gh-pages": "^6.1.1"
   }

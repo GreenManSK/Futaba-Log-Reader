@@ -4,6 +4,7 @@ import { usePresetsContext } from "../../contexts/PresetsContext";
 import { IPreset } from "../../data/Preset";
 import { useDataStorageContext } from "../../contexts/DataStorageContext";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
+import { saveAs } from 'file-saver';
 
 export interface IPresetsEditProps {
     setIsEditMode: (isEditMode: boolean) => void;
@@ -11,12 +12,15 @@ export interface IPresetsEditProps {
 
 export const PresetsEdit = (props: IPresetsEditProps) => {
     const { setIsEditMode } = props;
-    const { presets, remove, update } = usePresetsContext();
+    const { presets, remove, update, import: importPresets } = usePresetsContext();
     const { levelFilter, searches, excludedClasses } = useDataStorageContext();
     const { currentSession } = useLogsDataContext();
 
+    const fileUploadRef = React.useRef<HTMLInputElement>(null);
+
     const [category, setCategory] = React.useState("");
     const [name, setName] = React.useState("");
+    const [uncheckedPresets, setUncheckedPresets] = React.useState<IPreset[]>([]);
 
     const saveData = (presetToUpdate?: IPreset) => {
         if (!presetToUpdate && (!category || !name)) {
@@ -34,6 +38,27 @@ export const PresetsEdit = (props: IPresetsEditProps) => {
         update(presetToUpdate || preset, preset);
     };
 
+    const exportData = () => {
+        const data = JSON.stringify(presets.filter(p => !uncheckedPresets.includes(p)), null, 4);
+        const blob = new Blob([data], { type: "application/json" });
+        saveAs(blob, "futaba-export.json");
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const fileReader = new FileReader();
+            fileReader.onload = (e) => {
+                const result = e.target?.result;
+                if (!result) return;
+                const data = typeof result === "string" ? result : new TextDecoder().decode(result);
+                const importedPresets = JSON.parse(data) as IPreset[];
+                importPresets(importedPresets);
+            };
+            fileReader.readAsText(file);
+        }
+    };
+
     return <div className="PresetsEdit">
         <div className="form">
             <label htmlFor="category-input">Category</label><br />
@@ -46,14 +71,25 @@ export const PresetsEdit = (props: IPresetsEditProps) => {
             <button onClick={() => setIsEditMode(false)}>Close</button>
         </div>
         <hr />
-        <ul className="preset-list">
+        <ul className="checkbox-list">
             {presets.map(preset => {
                 return <li className="preset" key={preset.name}>
-                    <strong>{preset.category}</strong> - {preset.name}<br />
+                    <label>
+                        <input type="checkbox" checked={!uncheckedPresets.includes(preset)} onChange={() => {
+                            setUncheckedPresets(uncheckedPresets.includes(preset) ? uncheckedPresets.filter(p => p !== preset) : [...uncheckedPresets, preset]);
+                        }} />
+                        <strong>{preset.category}</strong> - {preset.name}
+                    </label>
                     <button onClick={() => saveData(preset)}>Update with current</button>&nbsp;
                     <button onClick={() => remove(preset)}>Delete</button>
                 </li>;
             })}
         </ul>
+        <hr />
+        <div className="buttons">
+            <button onClick={() => exportData()}>Export selected</button>
+            <button onClick={() => fileUploadRef.current?.click()}>Import new</button>
+            <input type="file" style={{ display: "none" }} onChange={handleFileChange} ref={fileUploadRef} />
+        </div>
     </div>;
 }
