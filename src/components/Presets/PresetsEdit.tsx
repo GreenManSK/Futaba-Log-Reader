@@ -73,7 +73,7 @@ export const PresetsEdit = (props: IPresetsEditProps) => {
         <hr />
         <ul className="checkbox-list">
             {presets.map(preset => {
-                return <li className="preset" key={preset.name}>
+                return <li className="preset" key={`${preset.category}-${preset.name}`}>
                     <label>
                         <input type="checkbox" checked={!uncheckedPresets.includes(preset)} onChange={() => {
                             setUncheckedPresets(uncheckedPresets.includes(preset) ? uncheckedPresets.filter(p => p !== preset) : [...uncheckedPresets, preset]);
