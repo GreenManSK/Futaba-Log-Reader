@@ -2,7 +2,6 @@ import React from "react";
 import { LogLevel } from "../data/ILogEntry";
 import { ISearchData, SearchFilter } from "../data/SearchFilter";
 import { useLogsDataContext } from "./LogsDataContext";
-import { set } from "lodash";
 
 interface IStoredFileData {
     hash: string,
@@ -43,7 +42,7 @@ export const useDataStorageContext = () => React.useContext(DataStorageContext);
 const STORAGE_KEY = "LOGS_DATA_STORAGE";
 const LAST_SAVE_KEY = "LAST_SAVE";
 const DATA_STORE_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
-const DEFAULT_LEVEL_FILTER = [LogLevel.WARNING, LogLevel.ERROR, LogLevel.UNKNOWN];
+export const DEFAULT_LEVEL_FILTER = [LogLevel.WARNING, LogLevel.ERROR, LogLevel.UNKNOWN];
 
 const clearOldData = (data: IStoredFileData) => {
     return data.lastUpdate + DATA_STORE_TIME > Date.now();

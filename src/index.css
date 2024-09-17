@@ -34,8 +34,8 @@ button {
   border: 1px solid var(--primaryColor);
 }
 
-button:hover,
-button:focus {
+button:not(:disabled):hover,
+button:not(:disabled):focus {
   background-color: var(--tertiaryColor);
   color: var(--white);
 }

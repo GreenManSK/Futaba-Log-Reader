@@ -9,6 +9,7 @@ import { Stats } from "../Stats/Stats";
 import { Favourite } from "../Favourite/Favourite";
 import { useDataStorageContext } from "../../contexts/DataStorageContext";
 import { GoToTopButton } from "./GoToTopButton";
+import { PresetsMenu } from "../Presets/PresetsMenu";
 
 const DEFAULT_LINES_LIMIT = 5000;
 
@@ -59,6 +60,7 @@ export const LogReader = () => {
         <h1>Log Reader</h1>
       </header>
       <div className="panel">
+        <PresetsMenu />
         <LogLevelFilter
           levelFilter={levelFilter}
           setLevelFilter={setLevelFilter}
