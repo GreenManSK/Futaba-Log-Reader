@@ -1,5 +1,5 @@
 import { LogLevel } from "./ILogEntry";
-import { ISearchData } from "./SearchFilter";
+import { ISearchSerialized } from "./ISearchSerialization";
 
 export interface IPreset {
   name: string;
@@ -9,6 +9,6 @@ export interface IPreset {
 
 export interface IPresetData {
   levelFilter: LogLevel[];
-  searchData: ISearchData[];
+  searchData: ISearchSerialized[];
   includedClasses: string[];
 }

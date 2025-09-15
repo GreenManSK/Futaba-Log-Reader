@@ -1,11 +1,5 @@
 import { ISearchFilter } from "./ISearchFilter";
-
-export type ISearchData = {
-    text: string;
-    enabled: boolean;
-    isCaseSensitive: boolean;
-    isRegex: boolean;
-}
+import { ISearchData } from "./ISearchSerialization";
 
 export class SearchFilter implements ISearchFilter {
     private static _idCounter: number = 0;

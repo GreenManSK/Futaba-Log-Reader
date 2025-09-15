@@ -7,6 +7,7 @@ import { Searches } from "../Search/Searches";
 import { LogTable } from "./LogTable";
 import { LineLimit } from "./LineLimit";
 import "./FilteredLogTable.css";
+import { ISearchFilter } from "../../data/ISearchFilter";
 
 interface IFilteredLogTableProps {
     data?: ILogEntry[];
@@ -14,8 +15,8 @@ interface IFilteredLogTableProps {
     setLineLimit: (limit: number) => void;
     levelFilter: Set<LogLevel>;
     excludedClasses: Set<string>;
-    searches: SearchFilter[];
-    setSearches: (searches: SearchFilter[]) => void;
+    searches: ISearchFilter[];
+    setSearches: (searches: ISearchFilter[]) => void;
     timeRange: ITimeRange;
     setTimeRange: (range: ITimeRange) => void;
     favourites: Set<number>;
@@ -42,7 +43,7 @@ export const FilteredLogTable = (props: IFilteredLogTableProps) => {
     const [filteredData, setFilteredData] = React.useState([] as ILogEntry[]);
 
     const updateFilteredData = React.useMemo(() => {
-        const update = (data: ILogEntry[] | undefined, lineLimit: number, levelFilter: Set<LogLevel>, excludedClasses: Set<string>, searches: SearchFilter[], timeRange: ITimeRange) => {
+        const update = (data: ILogEntry[] | undefined, lineLimit: number, levelFilter: Set<LogLevel>, excludedClasses: Set<string>, searches: ISearchFilter[], timeRange: ITimeRange) => {
             if (!data) {
                 return [];
             }

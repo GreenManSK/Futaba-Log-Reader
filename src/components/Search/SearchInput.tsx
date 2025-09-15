@@ -19,8 +19,8 @@ const isRegexValid = (text: string) => {
     }
 }
 
-export const Search = (props: ISearchProps) => {
-    const { index, search, updateSearch } = props;
+export const Search = React.memo((props: ISearchProps) => {
+    const { index, search, updateSearch, removeSearch } = props;
     const [searchText, setSearchText] = React.useState(search.text);
     const [isRegex, setIsRegex] = React.useState(search.isRegex);
     const [isCaseSensitive, setIsCaseSensitive] = React.useState(search.isCaseSensitive);
@@ -55,6 +55,7 @@ export const Search = (props: ISearchProps) => {
         <button className={!isEnabled ? "enabled" : "disabled"} onClick={() => setIsEnabled(!isEnabled)} title="Pause matching">
             <Pause size={14} />
         </button>
-        <button className="remove-button" onClick={() => props.removeSearch(index)} title="Remove search">Remove <Trash2 size={14} /></button>
+        <button className="remove-button" onClick={() => removeSearch(index)} title="Remove search">Remove <Trash2 size={14} /></button>
     </div>
-}
+});
+Search.displayName = "Search";

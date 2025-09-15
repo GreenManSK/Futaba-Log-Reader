@@ -5,6 +5,7 @@ import "./PresetsSelector.css";
 import { DEFAULT_LEVEL_FILTER, useDataStorageContext } from "../../contexts/DataStorageContext";
 import { SearchFilter } from "../../data/SearchFilter";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
+import { parseSearchData } from "../../helpers/searchParser";
 
 export interface IPresetsSelectorProps {
     setIsEditMode: (isEditMode: boolean) => void;
@@ -37,10 +38,7 @@ export const PresetsSelector = (props: IPresetsSelectorProps) => {
         preset.data.includedClasses.forEach(cls => classes.delete(cls));
         setLevelFilter(new Set(preset.data.levelFilter));
         setExcludedClasses(classes);
-        setSearches([
-            ...preset.data.searchData.map(data => new SearchFilter(data)),
-            new SearchFilter()
-        ]);
+        setSearches(parseSearchData(preset.data.searchData));
     };
 
     const clearPreset = () => {

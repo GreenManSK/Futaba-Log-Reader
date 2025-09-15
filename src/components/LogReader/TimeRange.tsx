@@ -31,8 +31,8 @@ export const TimeRange = (props: ITimeRangeProps) => {
 
     return <div className="time-range">
         Showing logs from<br />
-        <TimePicker time={start} setTime={setStart} />
-        &nbsp;to&nbsp;
+        <TimePicker time={start} setTime={setStart} /><br />
+        &nbsp;to&nbsp;<br />
         <TimePicker time={end} setTime={setEnd} />
     </div>
 }

@@ -1,14 +1,18 @@
 import React from "react";
 import { LogLevel } from "../data/ILogEntry";
-import { ISearchData, SearchFilter } from "../data/SearchFilter";
+import { SearchFilter } from "../data/SearchFilter";
 import { useLogsDataContext } from "./LogsDataContext";
+import { ISearchFilter } from "../data/ISearchFilter";
+import { SearchGroup } from "../data/SearchGroup";
+import { ISearchSerialized } from "../data/ISearchSerialization";
+import { parseSearchData } from "../helpers/searchParser";
 
 interface IStoredFileData {
     hash: string,
     lastUpdate: number,
     levelFilter: LogLevel[];
     excludedClasses: string[];
-    searches: ISearchData[];
+    searches: ISearchSerialized[];
     favourites: {
         [key: string]: number[];
     };
@@ -20,8 +24,8 @@ interface IDataStorageContext {
     setLevelFilter: (filter: Set<LogLevel>) => void;
     excludedClasses: Set<string>;
     setExcludedClasses: (classes: Set<string>) => void;
-    searches: SearchFilter[];
-    setSearches: (searches: SearchFilter[]) => void;
+    searches: ISearchFilter[];
+    setSearches: (searches: ISearchFilter[]) => void;
     favourites: Set<number>;
     setFavourites: (favourites: Set<number>) => void;
 }
@@ -48,6 +52,12 @@ const clearOldData = (data: IStoredFileData) => {
     return data.lastUpdate + DATA_STORE_TIME > Date.now();
 }
 
+const getDefaultSearches = () => {
+    const group = new SearchGroup();
+    group.children = [new SearchFilter()];
+    return [group];
+};
+
 export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { currentSession, dataHash } = useLogsDataContext();
     const storedData = React.useRef<IStoredFileData[]>([]);
@@ -58,7 +68,7 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
     const [favourites, setFavourites] = React.useState(new Set<number>());
     const [levelFilter, setLevelFilter] = React.useState(new Set(DEFAULT_LEVEL_FILTER));
     const [excludedClasses, setExcludedClasses] = React.useState(new Set<string>());
-    const [searches, setSearches] = React.useState([new SearchFilter()]);
+    const [searches, setSearches] = React.useState<ISearchFilter[]>(getDefaultSearches);
 
     const loadNewestData = React.useCallback(() => {
         if (lastSave.current === localStorage.getItem(LAST_SAVE_KEY)) {
@@ -78,7 +88,7 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
         if (!dataHash) {
             setLevelFilter(new Set(DEFAULT_LEVEL_FILTER));
             setExcludedClasses(new Set<string>());
-            setSearches([new SearchFilter()]);
+            setSearches(getDefaultSearches());
             setFavourites(new Set<number>());
             return;
         }
@@ -86,7 +96,7 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
         if (stored) {
             setLevelFilter(new Set(stored.levelFilter));
             setExcludedClasses(new Set(stored.excludedClasses));
-            setSearches(stored.searches.map(data => new SearchFilter(data)));
+            setSearches(parseSearchData(stored.searches));
             setFavourites(new Set(stored.favourites[currentSession?.name || ""] ?? []));
             loadedDataHash.current = dataHash;
             loadedSessionName.current = currentSession?.name;
