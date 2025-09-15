@@ -48,9 +48,12 @@ export const LogReader = () => {
     }
     const dates = data
       .map((entry) => entry.date.getTime())
-      .filter((date) => !isNaN(date));
+      .filter((date) => !isNaN(date) && date !== undefined);
     const start = new Date(Math.min(...dates));
     const end = new Date(Math.max(...dates));
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      return;
+    }
     setTimeRange({ start, end });
   }, [data]);
 

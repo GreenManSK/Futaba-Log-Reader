@@ -4,6 +4,7 @@ import { ISearchFilter } from "./ISearchFilter";
 import { md5 } from "js-md5";
 
 const CALL_ID_PREFIX = "CID[";
+
 class LogEntry implements ILogEntry {
     public id: number;
     public dateText: string;
@@ -88,12 +89,13 @@ const parseLine = (line: string, index: number): ILogEntry => {
 };
 
 const SESSION_SPLITTER = "The following logs are for previous session";
+const LINE_SPLITTER = /(?:\r\n|\n\r|\r|\n)/;
 
 export const parseLogs = (logs: string): {
     sessions: ILogSession[],
     hash: string,
 } => {
-    const lines = logs.split('\r').map(l => l.trim()).filter(l => l !== "");
+    const lines = logs.split(LINE_SPLITTER).map(l => l.trim()).filter(l => l !== "");
     // First line contains info about how many logs are guaranteed
     lines.shift();
 
