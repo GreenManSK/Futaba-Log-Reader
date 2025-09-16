@@ -2,7 +2,7 @@ import React from "react";
 import "./PresetsEdit.css";
 import { usePresetsContext } from "../../contexts/PresetsContext";
 import { IPreset } from "../../data/Preset";
-import { useDataStorageContext } from "../../contexts/DataStorageContext";
+import { useDataStorageDataContext } from "../../contexts/DataStorageContext";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
 import { saveAs } from 'file-saver';
 
@@ -13,7 +13,7 @@ export interface IPresetsEditProps {
 export const PresetsEdit = (props: IPresetsEditProps) => {
     const { setIsEditMode } = props;
     const { presets, remove, update, import: importPresets } = usePresetsContext();
-    const { levelFilter, searches, excludedClasses } = useDataStorageContext();
+    const { levelFilter, searches, excludedClasses } = useDataStorageDataContext();
     const { currentSession } = useLogsDataContext();
 
     const fileUploadRef = React.useRef<HTMLInputElement>(null);

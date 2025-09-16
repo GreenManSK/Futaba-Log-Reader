@@ -7,7 +7,7 @@ import { FilteredLogTable } from "./FilteredLogTable";
 import { SessionSelector } from "./SessionSelector";
 import { Stats } from "../Stats/Stats";
 import { Favourite } from "../Favourite/Favourite";
-import { useDataStorageContext } from "../../contexts/DataStorageContext";
+import { useDataStorageDataContext, useDataStorageSetterContext } from "../../contexts/DataStorageContext";
 import { GoToTopButton } from "./GoToTopButton";
 import { PresetsMenu } from "../Presets/PresetsMenu";
 
@@ -31,14 +31,16 @@ export const LogReader = () => {
 
   const {
     levelFilter,
-    setLevelFilter,
     excludedClasses,
-    setExcludedClasses,
     searches,
-    setSearches,
     favourites,
+  } = useDataStorageDataContext();
+  const {
+    setLevelFilter,
+    setExcludedClasses,
+    setSearches,
     setFavourites,
-  } = useDataStorageContext();
+  } = useDataStorageSetterContext();
 
   const data = currentSession?.data;
 

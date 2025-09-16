@@ -1,7 +1,7 @@
 import React from "react";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
 
-export const SessionSelector = () => {
+export const SessionSelector = React.memo(() => {
     const { currentSession, sessions, setCurrentSession, fileName } = useLogsDataContext();
 
     const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -19,4 +19,5 @@ export const SessionSelector = () => {
             {sessions.map(session => <option key={session.name} value={session.name}>{session.name}</option>)}
         </select>
     </div>;
-};
+});
+SessionSelector.displayName = "SessionSelector";

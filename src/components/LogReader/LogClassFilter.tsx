@@ -7,7 +7,7 @@ interface ILogClassFilterProps {
     setExcludedClasses: (filteredClasses: Set<string>) => void;
 }
 
-export const LogClassFilter = (props: ILogClassFilterProps) => {
+export const LogClassFilter = React.memo((props: ILogClassFilterProps) => {
     const { excludedClasses, setExcludedClasses } = props;
     const { currentSession } = useLogsDataContext();
     const [classFilter, setClassFilter] = React.useState("");
@@ -59,4 +59,5 @@ export const LogClassFilter = (props: ILogClassFilterProps) => {
             </ul>
         </div>
     </div>;
-};
+});
+LogClassFilter.displayName = "LogClassFilter";

@@ -19,29 +19,36 @@ interface IStoredFileData {
 
 }
 
-interface IDataStorageContext {
+interface IDataStorageDataContext {
     levelFilter: Set<LogLevel>;
-    setLevelFilter: (filter: Set<LogLevel>) => void;
     excludedClasses: Set<string>;
-    setExcludedClasses: (classes: Set<string>) => void;
     searches: ISearchFilter[];
-    setSearches: (searches: ISearchFilter[]) => void;
     favourites: Set<number>;
+}
+
+interface IDataStorageSetterContext {
+    setLevelFilter: (filter: Set<LogLevel>) => void;
+    setExcludedClasses: (classes: Set<string>) => void;
+    setSearches: (searches: ISearchFilter[]) => void;
     setFavourites: (favourites: Set<number>) => void;
 }
 
-export const DataStorageContext = React.createContext<IDataStorageContext>({
+export const DataStorageDataContext = React.createContext<IDataStorageDataContext>({
     levelFilter: new Set(),
-    setLevelFilter: () => { },
     excludedClasses: new Set(),
-    setExcludedClasses: () => { },
     searches: [],
+    favourites: new Set()
+});
+
+export const DataStorageSetterContext = React.createContext<IDataStorageSetterContext>({
+    setLevelFilter: () => { },
+    setExcludedClasses: () => { },
     setSearches: () => { },
-    favourites: new Set(),
     setFavourites: () => { }
 });
 
-export const useDataStorageContext = () => React.useContext(DataStorageContext);
+export const useDataStorageDataContext = () => React.useContext(DataStorageDataContext);
+export const useDataStorageSetterContext = () => React.useContext(DataStorageSetterContext);
 
 const STORAGE_KEY = "LOGS_DATA_STORAGE";
 const LAST_SAVE_KEY = "LAST_SAVE";
@@ -136,21 +143,28 @@ export const DataStorageProvider: React.FC<React.PropsWithChildren> = ({ childre
         localStorage.setItem(LAST_SAVE_KEY, lastSave.current);
     }, [dataHash, currentSession, levelFilter, excludedClasses, searches, favourites]);
 
-
-    const value = {
+    const dataValue = React.useMemo(() => ({
         levelFilter,
-        setLevelFilter,
         excludedClasses,
-        setExcludedClasses,
         searches,
-        setSearches,
-        favourites,
-        setFavourites
-    };
+        favourites
+    }), [
+        levelFilter,
+        excludedClasses,
+        searches,
+        favourites
+    ]);
+    const setterValue = React.useMemo(() => ({
+        setLevelFilter, setExcludedClasses, setSearches, setFavourites
+    }), [
+        setLevelFilter, setExcludedClasses, setSearches, setFavourites
+    ]);
 
     return (
-        <DataStorageContext.Provider value={value}>
-            {children}
-        </DataStorageContext.Provider>
+        <DataStorageDataContext.Provider value={dataValue}>
+            <DataStorageSetterContext.Provider value={setterValue}>
+                {children}
+            </DataStorageSetterContext.Provider>
+        </DataStorageDataContext.Provider>
     );
 };

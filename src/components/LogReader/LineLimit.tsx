@@ -8,7 +8,7 @@ interface ILineLimitProps {
 }
 
 const DEFAULT_LINES_LIMIT_INCREASE = 5000;
-export const LineLimit = (props: ILineLimitProps) => {
+export const LineLimit = React.memo((props: ILineLimitProps) => {
     const { lineLimit, setLineLimit } = props;
     const { currentSession } = useLogsDataContext();
 
@@ -16,7 +16,6 @@ export const LineLimit = (props: ILineLimitProps) => {
     const setCustomLimit = () => {
         const customLimit = prompt("Enter custom limit", `${currentSession?.data.length || lineLimit}`);
         setLineLimit(Number(customLimit) || lineLimit);
-
     };
 
     return <div className="line-count">
@@ -24,4 +23,5 @@ export const LineLimit = (props: ILineLimitProps) => {
         <button onClick={loadMoreLines}>Load more</button>
         <button onClick={setCustomLimit}>Set custom limit</button>
     </div>
-};
+});
+LineLimit.displayName = "LineLimit";

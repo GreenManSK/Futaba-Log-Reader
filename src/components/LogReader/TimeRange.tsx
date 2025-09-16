@@ -14,7 +14,7 @@ interface ITimePickerProps {
 
 }
 
-export const TimeRange = (props: ITimeRangeProps) => {
+export const TimeRange = React.memo((props: ITimeRangeProps) => {
     const { timeRange, setTimeRange } = props;
 
     const [start, setStart] = React.useState(timeRange.start);
@@ -35,7 +35,8 @@ export const TimeRange = (props: ITimeRangeProps) => {
         &nbsp;to&nbsp;<br />
         <TimePicker time={end} setTime={setEnd} />
     </div>
-}
+});
+TimeRange.displayName = "TimeRange";
 
 const TimePicker = (props: ITimePickerProps) => {
     const { time, setTime } = props;

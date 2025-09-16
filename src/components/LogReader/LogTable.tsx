@@ -9,9 +9,15 @@ interface ILogTableProps {
   setFavourites: (favourites: Set<number>) => void;
 }
 
-export const LogTable = (props: ILogTableProps) => {
+const HeartMemo = React.memo(Heart);
+HeartMemo.displayName = "HeartMemo";
+const HeartOffMemo = React.memo(HeartOff);
+HeartOffMemo.displayName = "HeartOffMemo";
+
+export const LogTable = React.memo((props: ILogTableProps) => {
   const { data, favourites, setFavourites } = props;
-  const toggleFavourite = (id: number) => {
+
+  const toggleFavourite = React.useCallback((id: number) => {
     const newFavourites = new Set(favourites);
     if (newFavourites.has(id)) {
       newFavourites.delete(id);
@@ -19,7 +25,7 @@ export const LogTable = (props: ILogTableProps) => {
       newFavourites.add(id);
     }
     setFavourites(newFavourites);
-  };
+  }, [favourites, setFavourites]);
 
   return (
     <table className="logs">
@@ -33,36 +39,48 @@ export const LogTable = (props: ILogTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((entry, index) => (
-          <tr key={index} className={`level-${entry.level}`}>
-            <td className="number">
-              <button
-                className="fav-button"
-                onClick={() => toggleFavourite(entry.id)}
-                title={
-                  favourites.has(entry.id)
-                    ? "Add to favourites"
-                    : "Remove from favourites"
-                }
-              >
-                {favourites.has(entry.id) ? (
-                  <HeartOff fill="white" size={12} />
-                ) : (
-                  <Heart fill="white" size={12} />
-                )}
-              </button>
-              {entry.id}
-            </td>
-            <td className="date">{entry.dateText}</td>
-            <td>{LogLevel[entry.level]}</td>
-            <td className="class-name">
-              {entry.loggingClass}
-              {entry.callId && <div className="call-id">{entry.callId}</div>}
-            </td>
-            <td className="message">{entry.message}</td>
-          </tr>
+        {data.map((entry, index) => (<LogTableRow key={index} entry={entry} toggleFavourite={toggleFavourite} isFavourite={favourites.has(entry.id)} />
         ))}
       </tbody>
     </table>
   );
-};
+});
+LogTable.displayName = "LogTable";
+
+interface ILogTableRowProps {
+  isFavourite: boolean;
+  toggleFavourite: (id: number) => void;
+  entry: ILogEntry;
+}
+const LogTableRow = React.memo((props: ILogTableRowProps) => {
+  const { entry, isFavourite, toggleFavourite } = props;
+
+  return <tr className={`level-${entry.level}`}>
+    <td className="number">
+      <button
+        className="fav-button"
+        onClick={() => toggleFavourite(entry.id)}
+        title={
+          isFavourite
+            ? "Add to favourites"
+            : "Remove from favourites"
+        }
+      >
+        {isFavourite ? (
+          <HeartOffMemo fill="white" size={12} />
+        ) : (
+          <HeartMemo fill="white" size={12} />
+        )}
+      </button>
+      {entry.id}
+    </td>
+    <td className="date">{entry.dateText}</td>
+    <td>{LogLevel[entry.level]}</td>
+    <td className="class-name">
+      {entry.loggingClass}
+      {entry.callId && <div className="call-id">{entry.callId}</div>}
+    </td>
+    <td className="message">{entry.message}</td>
+  </tr>;
+});
+LogTableRow.displayName = "LogTableRow";

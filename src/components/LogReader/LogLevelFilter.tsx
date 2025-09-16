@@ -7,7 +7,7 @@ interface ILogLevelFilterProps {
 }
 
 const LEVELS = [LogLevel.INFO, LogLevel.WARNING, LogLevel.ERROR, LogLevel.DEBUG, LogLevel.UNKNOWN];
-export const LogLevelFilter = (props: ILogLevelFilterProps) => {
+export const LogLevelFilter = React.memo((props: ILogLevelFilterProps) => {
     const { levelFilter, setLevelFilter } = props;
 
     const onChange = (level: LogLevel) => {
@@ -31,4 +31,5 @@ export const LogLevelFilter = (props: ILogLevelFilterProps) => {
             </li>))}
         </ul>
     </div>;
-};
+});
+LogLevelFilter.displayName = "LogLevelFilter";

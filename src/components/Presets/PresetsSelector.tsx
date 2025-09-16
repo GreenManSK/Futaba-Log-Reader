@@ -2,7 +2,7 @@ import React from "react";
 import { usePresetsContext } from "../../contexts/PresetsContext";
 import { IPreset } from "../../data/Preset";
 import "./PresetsSelector.css";
-import { DEFAULT_LEVEL_FILTER, useDataStorageContext } from "../../contexts/DataStorageContext";
+import { DEFAULT_LEVEL_FILTER, useDataStorageSetterContext } from "../../contexts/DataStorageContext";
 import { SearchFilter } from "../../data/SearchFilter";
 import { useLogsDataContext } from "../../contexts/LogsDataContext";
 import { parseSearchData } from "../../helpers/searchParser";
@@ -13,7 +13,7 @@ export interface IPresetsSelectorProps {
 
 export const PresetsSelector = (props: IPresetsSelectorProps) => {
     const { presets } = usePresetsContext();
-    const { setLevelFilter, setExcludedClasses, setSearches } = useDataStorageContext();
+    const { setLevelFilter, setExcludedClasses, setSearches } = useDataStorageSetterContext();
     const { currentSession } = useLogsDataContext();
     const [value, setValue] = React.useState<number | undefined>(undefined);
 

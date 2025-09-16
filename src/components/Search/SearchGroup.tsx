@@ -13,6 +13,11 @@ interface ISearchGroupProps {
     removeSearch?: (index: number) => void;
 }
 
+const MemoPause = React.memo(Pause);
+MemoPause.displayName = "MemoPause";
+const MemoTrash = React.memo(Trash2);
+MemoTrash.displayName = "MemoTrash";
+
 export const SearchGroupRenderer = React.memo((props: ISearchGroupProps) => {
     const { index, searchGroup, updateSearch, removeSearch } = props;
     const [children, setChildren] = React.useState(searchGroup.children);
@@ -65,9 +70,9 @@ export const SearchGroupRenderer = React.memo((props: ISearchGroupProps) => {
                 OR
             </button>
             <button className={!isEnabled ? "enabled" : "disabled"} onClick={() => setIsEnabled(!isEnabled)} title="Pause matching">
-                <Pause size={14} />
+                <MemoPause size={14} />
             </button>
-            {removeSearch && <button className="remove-button" onClick={() => removeSearch(index)} title="Remove group"><Trash2 size={14} /></button>}
+            {removeSearch && <button className="remove-button" onClick={() => removeSearch(index)} title="Remove group"><MemoTrash size={14} /></button>}
         </div>
         {children.map((search, childIndex) => (<div key={search.id} className="wrapper">
             {childIndex !== 0 && <div className="divider">{isOr ? "or" : "and"}</div>}
