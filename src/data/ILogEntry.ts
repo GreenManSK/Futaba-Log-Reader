@@ -1,20 +1,20 @@
-import { ISearchFilter } from "./ISearchFilter";
+import { ISearchFilter } from './ISearchFilter';
 
 export enum LogLevel {
     INFO,
     WARNING,
     ERROR,
     DEBUG,
-    UNKNOWN
-};
+    UNKNOWN,
+}
 
 export interface ILogEntry {
-    id: number,
-    dateText: string,
-    date: Date,
-    level: LogLevel,
-    loggingClass: string,
-    message: string
+    id: number;
+    dateText: string;
+    date: Date;
+    level: LogLevel;
+    loggingClass: string;
+    message: string;
     callId?: string;
 
     matchesFilter(search: ISearchFilter): boolean;

@@ -1,109 +1,110 @@
 :root {
-  --primaryColor: #294b29;
-  --secondaryColor: #50623A;
-  --tertiaryColor: #789461;
-  --quaternaryColor: #DBE7C9;
+    --primaryColor: #294b29;
+    --secondaryColor: #50623a;
+    --tertiaryColor: #789461;
+    --quaternaryColor: #dbe7c9;
 
-  --errorPrimaryColor: #e64747;
-  --errorSecondaryColor: #ff0707;
-  --errorTertiaryColor: #ff4343;
-  --errorQuaternaryColor: #ffbaba;
+    --errorPrimaryColor: #e64747;
+    --errorSecondaryColor: #ff0707;
+    --errorTertiaryColor: #ff4343;
+    --errorQuaternaryColor: #ffbaba;
 
-  --white: #fff;
-  --textShadow: 0 1px 0 rgba(0, 0, 0, .1);
-  --panelSize: 200px;
+    --white: #fff;
+    --textShadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    --panelSize: 200px;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    font-family:
+        -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family:
+        source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 button {
-  background-color: var(--quaternaryColor);
-  border: 1px solid var(--primaryColor);
+    background-color: var(--quaternaryColor);
+    border: 1px solid var(--primaryColor);
 }
 
 button:not(:disabled):hover,
 button:not(:disabled):focus {
-  background-color: var(--tertiaryColor);
-  color: var(--white);
+    background-color: var(--tertiaryColor);
+    color: var(--white);
 }
 
 table {
-  font-size: 14px;
-  text-align: left;
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 1rem;
+    font-size: 14px;
+    text-align: left;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
 
-  tr {
-    --bgOpacityBase: 0;
-    --increase: 0.05;
-    --bgOpacity: var(--bgOpacityBase);
-    border-top: .5px solid #d3d3d3;
-    background-color: rgba(0, 0, 0, var(--bgOpacity));
-  }
+    tr {
+        --bgOpacityBase: 0;
+        --increase: 0.05;
+        --bgOpacity: var(--bgOpacityBase);
+        border-top: 0.5px solid #d3d3d3;
+        background-color: rgba(0, 0, 0, var(--bgOpacity));
+    }
 
-  td,
-  th {
-    padding: 0 0.5rem;
-    vertical-align: top;
-  }
+    td,
+    th {
+        padding: 0 0.5rem;
+        vertical-align: top;
+    }
 
-  th {
-    color: var(--secondaryColor);
-  }
+    th {
+        color: var(--secondaryColor);
+    }
 
-  tr.level-1,
-  tr.level-3 {
-    --bgOpacityBase: 0.1;
-    --increase: 0.1;
-  }
+    tr.level-1,
+    tr.level-3 {
+        --bgOpacityBase: 0.1;
+        --increase: 0.1;
+    }
 
-  /* Info */
-  tr.level-0 {
-    --bgOpacityBase: 0.05;
-    --increase: 0.05;
-    background-color: rgba(0, 0, 255, var(--bgOpacity));
-  }
+    /* Info */
+    tr.level-0 {
+        --bgOpacityBase: 0.05;
+        --increase: 0.05;
+        background-color: rgba(0, 0, 255, var(--bgOpacity));
+    }
 
-  /* Warning */
-  tr.level-1 {
-    background-color: rgba(255, 255, 0, var(--bgOpacity));
-  }
+    /* Warning */
+    tr.level-1 {
+        background-color: rgba(255, 255, 0, var(--bgOpacity));
+    }
 
-  /* Error */
-  tr.level-2 {
-    --bgOpacityBase: 0.2;
-    --increase: 0.1;
-    background-color: rgba(255, 0, 0, var(--bgOpacity));
-  }
+    /* Error */
+    tr.level-2 {
+        --bgOpacityBase: 0.2;
+        --increase: 0.1;
+        background-color: rgba(255, 0, 0, var(--bgOpacity));
+    }
 
-  /* Debug */
-  tr.level-3 {
-    background-color: rgba(0, 255, 0, var(--bgOpacity));
-  }
+    /* Debug */
+    tr.level-3 {
+        background-color: rgba(0, 255, 0, var(--bgOpacity));
+    }
 
-  tr:nth-child(even) {
-    --bgOpacity: calc(var(--bgOpacityBase) + var(--increase));
-  }
+    tr:nth-child(even) {
+        --bgOpacity: calc(var(--bgOpacityBase) + var(--increase));
+    }
 
-  tr:hover {
-    --bgOpacity: calc(var(--bgOpacityBase) + 2 * var(--increase));
-  }
+    tr:hover {
+        --bgOpacity: calc(var(--bgOpacityBase) + 2 * var(--increase));
+    }
 
-  tr:nth-child(even):hover {
-    --bgOpacity: calc(var(--bgOpacityBase) + 3 * var(--increase));
-  }
+    tr:nth-child(even):hover {
+        --bgOpacity: calc(var(--bgOpacityBase) + 3 * var(--increase));
+    }
 }

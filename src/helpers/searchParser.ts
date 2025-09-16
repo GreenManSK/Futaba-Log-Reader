@@ -1,9 +1,9 @@
-import { ISearchData, ISearchSerialized } from "../data/ISearchSerialization";
-import { SearchFilter } from "../data/SearchFilter";
-import { SearchGroup } from "../data/SearchGroup";
+import { ISearchData, ISearchSerialized } from '../data/ISearchSerialization';
+import { SearchFilter } from '../data/SearchFilter';
+import { SearchGroup } from '../data/SearchGroup';
 
 export const parseSearchData = (data: ISearchSerialized[]) => {
-    const searches = data.map(searchData => {
+    const searches = data.map((searchData) => {
         if ('isGroup' in searchData && searchData.isGroup) {
             return new SearchGroup(searchData);
         } else {
@@ -16,4 +16,4 @@ export const parseSearchData = (data: ISearchSerialized[]) => {
     const parentGroup = new SearchGroup();
     parentGroup.children = searches;
     return [parentGroup];
-}
+};

@@ -4,15 +4,16 @@
     column-gap: 20px;
     row-gap: 10px;
     grid-template-areas:
-        "header header header header"
-        ". panel main-content .";
+        'header header header header'
+        '. panel main-content .';
 
     header {
         grid-area: header;
 
         h1 {
             color: var(--white);
-            background: var(--secondaryColor) url("/public/logo.png") no-repeat right center;
+            background: var(--secondaryColor) url('/public/logo.png') no-repeat
+                right center;
             background-size: contain;
             margin: 0;
             padding: 1rem;
@@ -27,7 +28,7 @@
             color: var(--secondaryColor);
             text-shadow: var(--textShadow);
             font-size: 20px;
-            margin: 0 0 .5rem;
+            margin: 0 0 0.5rem;
             padding: 0;
         }
 
@@ -57,7 +58,7 @@
     }
 
     .tabs-buttons {
-        padding: .5rem 0;
+        padding: 0.5rem 0;
         display: flex;
         justify-content: left;
         gap: 1rem;

@@ -1,9 +1,9 @@
-import React from "react";
-import "./SearchGroup.css";
-import { SearchGroup } from "../../data/SearchGroup";
-import { SearchFilter } from "../../data/SearchFilter";
-import { ISearchFilter } from "../../data/ISearchFilter";
-import { Search } from "./SearchInput";
+import React from 'react';
+import './SearchGroup.css';
+import { SearchGroup } from '../../data/SearchGroup';
+import { SearchFilter } from '../../data/SearchFilter';
+import { ISearchFilter } from '../../data/ISearchFilter';
+import { Search } from './SearchInput';
 import { Trash2, Pause } from 'lucide-react';
 
 interface ISearchGroupProps {
@@ -14,9 +14,9 @@ interface ISearchGroupProps {
 }
 
 const MemoPause = React.memo(Pause);
-MemoPause.displayName = "MemoPause";
+MemoPause.displayName = 'MemoPause';
 const MemoTrash = React.memo(Trash2);
-MemoTrash.displayName = "MemoTrash";
+MemoTrash.displayName = 'MemoTrash';
 
 export const SearchGroupRenderer = React.memo((props: ISearchGroupProps) => {
     const { index, searchGroup, updateSearch, removeSearch } = props;
@@ -24,17 +24,23 @@ export const SearchGroupRenderer = React.memo((props: ISearchGroupProps) => {
     const [isEnabled, setIsEnabled] = React.useState(searchGroup.enabled);
     const [isOr, setIsOr] = React.useState(searchGroup.isOr);
 
-    const updateChild = React.useCallback((childIndex: number, search: ISearchFilter) => {
-        const newChildren = searchGroup.children.slice();
-        newChildren[childIndex] = search;
-        setChildren(newChildren);
-    }, [setChildren, searchGroup]);
+    const updateChild = React.useCallback(
+        (childIndex: number, search: ISearchFilter) => {
+            const newChildren = searchGroup.children.slice();
+            newChildren[childIndex] = search;
+            setChildren(newChildren);
+        },
+        [setChildren, searchGroup]
+    );
 
-    const removeChild = React.useCallback((childIndex: number) => {
-        const newChildren = searchGroup.children.slice();
-        newChildren.splice(childIndex, 1);
-        setChildren(newChildren);
-    }, [setChildren, searchGroup]);
+    const removeChild = React.useCallback(
+        (childIndex: number) => {
+            const newChildren = searchGroup.children.slice();
+            newChildren.splice(childIndex, 1);
+            setChildren(newChildren);
+        },
+        [setChildren, searchGroup]
+    );
 
     const addSearch = () => {
         setChildren([...children, new SearchFilter()]);
@@ -59,32 +65,69 @@ export const SearchGroupRenderer = React.memo((props: ISearchGroupProps) => {
         searchGroup.enabled = isEnabled;
         searchGroup.isOr = isOr;
         updateSearch(index, searchGroup);
-    }, [isEnabled, isOr, index, searchGroup, updateSearch])
+    }, [isEnabled, isOr, index, searchGroup, updateSearch]);
 
-    return <div className="search-group">
-        <div className="controls">
-            <button className={!isOr ? "enabled" : "disabled"} onClick={() => setIsOr(false)} title="Set as AND group">
-                AND
-            </button>
-            <button className={isOr ? "enabled" : "disabled"} onClick={() => setIsOr(true)} title="Set as OR group">
-                OR
-            </button>
-            <button className={!isEnabled ? "enabled" : "disabled"} onClick={() => setIsEnabled(!isEnabled)} title="Pause matching">
-                <MemoPause size={14} />
-            </button>
-            {removeSearch && <button className="remove-button" onClick={() => removeSearch(index)} title="Remove group"><MemoTrash size={14} /></button>}
+    return (
+        <div className="search-group">
+            <div className="controls">
+                <button
+                    className={!isOr ? 'enabled' : 'disabled'}
+                    onClick={() => setIsOr(false)}
+                    title="Set as AND group"
+                >
+                    AND
+                </button>
+                <button
+                    className={isOr ? 'enabled' : 'disabled'}
+                    onClick={() => setIsOr(true)}
+                    title="Set as OR group"
+                >
+                    OR
+                </button>
+                <button
+                    className={!isEnabled ? 'enabled' : 'disabled'}
+                    onClick={() => setIsEnabled(!isEnabled)}
+                    title="Pause matching"
+                >
+                    <MemoPause size={14} />
+                </button>
+                {removeSearch && (
+                    <button
+                        className="remove-button"
+                        onClick={() => removeSearch(index)}
+                        title="Remove group"
+                    >
+                        <MemoTrash size={14} />
+                    </button>
+                )}
+            </div>
+            {children.map((search, childIndex) => (
+                <div key={search.id} className="wrapper">
+                    {childIndex !== 0 && (
+                        <div className="divider">{isOr ? 'or' : 'and'}</div>
+                    )}
+                    {search instanceof SearchFilter ? (
+                        <Search
+                            index={childIndex}
+                            search={search}
+                            updateSearch={updateChild}
+                            removeSearch={removeChild}
+                        />
+                    ) : (
+                        <SearchGroupRenderer
+                            index={childIndex}
+                            searchGroup={search as SearchGroup}
+                            updateSearch={updateChild}
+                            removeSearch={removeChild}
+                        />
+                    )}
+                </div>
+            ))}
+            <div>
+                <button onClick={addSearch}>Add Search</button>&nbsp;
+                <button onClick={addGroup}>Add Group</button>
+            </div>
         </div>
-        {children.map((search, childIndex) => (<div key={search.id} className="wrapper">
-            {childIndex !== 0 && <div className="divider">{isOr ? "or" : "and"}</div>}
-            {search instanceof SearchFilter ?
-                <Search index={childIndex} search={search} updateSearch={updateChild} removeSearch={removeChild} /> :
-                <SearchGroupRenderer index={childIndex} searchGroup={search as SearchGroup} updateSearch={updateChild} removeSearch={removeChild} />}
-        </div>
-        ))}
-        <div>
-            <button onClick={addSearch}>Add Search</button>&nbsp;
-            <button onClick={addGroup}>Add Group</button>
-        </div>
-    </div>;
+    );
 });
-SearchGroupRenderer.displayName = "SearchGroupRenderer";
+SearchGroupRenderer.displayName = 'SearchGroupRenderer';

@@ -1,6 +1,6 @@
-import { ISearchFilter } from "./ISearchFilter";
-import { ISearchData, ISearchGroupData } from "./ISearchSerialization";
-import { SearchFilter } from "./SearchFilter";
+import { ISearchFilter } from './ISearchFilter';
+import { ISearchData, ISearchGroupData } from './ISearchSerialization';
+import { SearchFilter } from './SearchFilter';
 
 export class SearchGroup implements ISearchFilter {
     private static _idCounter: number = 0;
@@ -16,7 +16,7 @@ export class SearchGroup implements ISearchFilter {
         if (data) {
             this.enabled = data.enabled;
             this.isOr = data.isOr;
-            this.children = data.children.map(child => {
+            this.children = data.children.map((child) => {
                 if ('isGroup' in child && child.isGroup) {
                     return new SearchGroup(child);
                 } else {
@@ -58,7 +58,7 @@ export class SearchGroup implements ISearchFilter {
             isGroup: true,
             enabled: this.enabled,
             isOr: this.isOr,
-            children: this.children.map(child => child.getData())
+            children: this.children.map((child) => child.getData()),
         };
     }
 }

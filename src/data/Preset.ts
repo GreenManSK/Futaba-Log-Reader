@@ -1,14 +1,14 @@
-import { LogLevel } from "./ILogEntry";
-import { ISearchSerialized } from "./ISearchSerialization";
+import { LogLevel } from './ILogEntry';
+import { ISearchSerialized } from './ISearchSerialization';
 
 export interface IPreset {
-  name: string;
-  category: string;
-  data: IPresetData;
+    name: string;
+    category: string;
+    data: IPresetData;
 }
 
 export interface IPresetData {
-  levelFilter: LogLevel[];
-  searchData: ISearchSerialized[];
-  includedClasses: string[];
+    levelFilter: LogLevel[];
+    searchData: ISearchSerialized[];
+    includedClasses: string[];
 }

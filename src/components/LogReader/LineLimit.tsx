@@ -1,6 +1,6 @@
-import React from "react";
-import { useLogsDataContext } from "../../contexts/LogsDataContext";
-import "./LineLimit.css";
+import React from 'react';
+import { useLogsDataContext } from '../../contexts/LogsDataContext';
+import './LineLimit.css';
 
 interface ILineLimitProps {
     lineLimit: number;
@@ -12,16 +12,22 @@ export const LineLimit = React.memo((props: ILineLimitProps) => {
     const { lineLimit, setLineLimit } = props;
     const { currentSession } = useLogsDataContext();
 
-    const loadMoreLines = () => setLineLimit(lineLimit + DEFAULT_LINES_LIMIT_INCREASE);
+    const loadMoreLines = () =>
+        setLineLimit(lineLimit + DEFAULT_LINES_LIMIT_INCREASE);
     const setCustomLimit = () => {
-        const customLimit = prompt("Enter custom limit", `${currentSession?.data.length || lineLimit}`);
+        const customLimit = prompt(
+            'Enter custom limit',
+            `${currentSession?.data.length || lineLimit}`
+        );
         setLineLimit(Number(customLimit) || lineLimit);
     };
 
-    return <div className="line-count">
-        {`Showing at most the first ${lineLimit} lines of ${currentSession?.data.length}.`}
-        <button onClick={loadMoreLines}>Load more</button>
-        <button onClick={setCustomLimit}>Set custom limit</button>
-    </div>
+    return (
+        <div className="line-count">
+            {`Showing at most the first ${lineLimit} lines of ${currentSession?.data.length}.`}
+            <button onClick={loadMoreLines}>Load more</button>
+            <button onClick={setCustomLimit}>Set custom limit</button>
+        </div>
+    );
 });
-LineLimit.displayName = "LineLimit";
+LineLimit.displayName = 'LineLimit';

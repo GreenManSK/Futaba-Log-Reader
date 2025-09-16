@@ -1,4 +1,4 @@
-import { ISearchSerialized } from "./ISearchSerialization";
+import { ISearchSerialized } from './ISearchSerialization';
 
 export interface ISearchFilter {
     id: number;

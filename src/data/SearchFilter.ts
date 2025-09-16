@@ -1,5 +1,5 @@
-import { ISearchFilter } from "./ISearchFilter";
-import { ISearchData } from "./ISearchSerialization";
+import { ISearchFilter } from './ISearchFilter';
+import { ISearchData } from './ISearchSerialization';
 
 export class SearchFilter implements ISearchFilter {
     private static _idCounter: number = 0;
@@ -9,8 +9,8 @@ export class SearchFilter implements ISearchFilter {
     private _isCaseSensitive: boolean = false;
     private _isRegex: boolean = false;
 
-    private _text: string = "";
-    private _searchText: string = "";
+    private _text: string = '';
+    private _searchText: string = '';
     private _searchRegex?: RegExp;
 
     private _id: number;
@@ -31,12 +31,15 @@ export class SearchFilter implements ISearchFilter {
             text: this._text,
             enabled: this.enabled,
             isCaseSensitive: this._isCaseSensitive,
-            isRegex: this._isRegex
+            isRegex: this._isRegex,
         };
     }
 
-    public matchesFilter(text: string, lowerCaseText?: string | undefined): boolean {
-        if (!this.enabled || this._text === "") {
+    public matchesFilter(
+        text: string,
+        lowerCaseText?: string | undefined
+    ): boolean {
+        if (!this.enabled || this._text === '') {
             return true;
         }
 
@@ -48,7 +51,9 @@ export class SearchFilter implements ISearchFilter {
             return text.includes(this._searchText);
         }
 
-        return lowerCaseText ? lowerCaseText.includes(this._searchText) : text.toLowerCase().includes(this._searchText);
+        return lowerCaseText
+            ? lowerCaseText.includes(this._searchText)
+            : text.toLowerCase().includes(this._searchText);
     }
 
     public set isCaseSensitive(value: boolean) {
@@ -83,13 +88,17 @@ export class SearchFilter implements ISearchFilter {
     private prepareSearch() {
         if (this._isRegex) {
             try {
-            this._searchRegex = new RegExp(this._text, this._isCaseSensitive ? "g" : "gi");
+                this._searchRegex = new RegExp(
+                    this._text,
+                    this._isCaseSensitive ? 'g' : 'gi'
+                );
             } catch (_) {
                 // Invalid regex, we won't use it
             }
             return;
         }
-        this._searchText = this._isCaseSensitive ? this._text : this._text.toLowerCase();
+        this._searchText = this._isCaseSensitive
+            ? this._text
+            : this._text.toLowerCase();
     }
-
 }

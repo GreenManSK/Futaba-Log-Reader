@@ -1,9 +1,9 @@
-import { ILogEntry, LogLevel } from "./ILogEntry";
-import { ILogSession } from "./ILogSession";
-import { ISearchFilter } from "./ISearchFilter";
-import { md5 } from "js-md5";
+import { ILogEntry, LogLevel } from './ILogEntry';
+import { ILogSession } from './ILogSession';
+import { ISearchFilter } from './ISearchFilter';
+import { md5 } from 'js-md5';
 
-const CALL_ID_PREFIX = "CID[";
+const CALL_ID_PREFIX = 'CID[';
 
 class LogEntry implements ILogEntry {
     public id: number;
@@ -17,7 +17,13 @@ class LogEntry implements ILogEntry {
     private _loggingClassLowerCase?: string;
     private _messageLoweCase?: string;
 
-    constructor(id: number, date: string, level: LogLevel, loggingClass: string, message: string) {
+    constructor(
+        id: number,
+        date: string,
+        level: LogLevel,
+        loggingClass: string,
+        message: string
+    ) {
         this.id = id;
         this.dateText = date;
         this.date = new Date(Date.parse(date));
@@ -28,7 +34,10 @@ class LogEntry implements ILogEntry {
     }
 
     public matchesFilter(search: ISearchFilter): boolean {
-        return this.messageMatchesFilter(search) || this.loggingClassMatchesFilter(search);
+        return (
+            this.messageMatchesFilter(search) ||
+            this.loggingClassMatchesFilter(search)
+        );
     }
 
     public isInRange(start: Date, end: Date): boolean {
@@ -46,7 +55,13 @@ class LogEntry implements ILogEntry {
         if (this._loggingClassLowerCase === undefined) {
             this._loggingClassLowerCase = this.loggingClass.toLowerCase();
         }
-        return search.matchesFilter(this.loggingClass, this._loggingClassLowerCase) || !!(this.callId && search.matchesFilter(this.callId, this.callId));
+        return (
+            search.matchesFilter(
+                this.loggingClass,
+                this._loggingClassLowerCase
+            ) ||
+            !!(this.callId && search.matchesFilter(this.callId, this.callId))
+        );
     }
 
     private setLoggingClassData(loggingClass: string) {
@@ -54,7 +69,7 @@ class LogEntry implements ILogEntry {
             this.loggingClass = loggingClass;
             return;
         }
-        const [callId, className] = loggingClass.split("] ");
+        const [callId, className] = loggingClass.split('] ');
         this.callId = callId.slice(CALL_ID_PREFIX.length);
         this.loggingClass = className;
     }
@@ -62,44 +77,55 @@ class LogEntry implements ILogEntry {
 
 const stringToLogLevel = (level: string): LogLevel => {
     switch (level.toLowerCase()) {
-        case "inf":
+        case 'inf':
             return LogLevel.INFO;
-        case "war":
+        case 'war':
             return LogLevel.WARNING;
-        case "deb":
+        case 'deb':
             return LogLevel.DEBUG;
-        case "err":
+        case 'err':
             return LogLevel.ERROR;
         default:
             return LogLevel.UNKNOWN;
     }
-}
+};
 
 const parseLine = (line: string, index: number): ILogEntry => {
-    const dateSeparator = line.indexOf(" ");
-    const levelSeparator = line.indexOf("\t");
-    const loggingClassSeparator = line.indexOf(":", levelSeparator);
+    const dateSeparator = line.indexOf(' ');
+    const levelSeparator = line.indexOf('\t');
+    const loggingClassSeparator = line.indexOf(':', levelSeparator);
 
     const date = line.slice(0, dateSeparator);
     const level = line.slice(dateSeparator + 1, levelSeparator);
     const loggingClass = line.slice(levelSeparator + 1, loggingClassSeparator);
     const message = line.slice(loggingClassSeparator + 1).trim();
 
-    return new LogEntry(index + 1, date, stringToLogLevel(level), loggingClass, message);
+    return new LogEntry(
+        index + 1,
+        date,
+        stringToLogLevel(level),
+        loggingClass,
+        message
+    );
 };
 
-const SESSION_SPLITTER = "The following logs are for previous session";
+const SESSION_SPLITTER = 'The following logs are for previous session';
 const LINE_SPLITTER = /(?:\r\n|\n\r|\r|\n)/;
 
-export const parseLogs = (logs: string): {
-    sessions: ILogSession[],
-    hash: string,
+export const parseLogs = (
+    logs: string
+): {
+    sessions: ILogSession[];
+    hash: string;
 } => {
-    const lines = logs.split(LINE_SPLITTER).map(l => l.trim()).filter(l => l !== "");
+    const lines = logs
+        .split(LINE_SPLITTER)
+        .map((l) => l.trim())
+        .filter((l) => l !== '');
     // First line contains info about how many logs are guaranteed
     lines.shift();
 
-    const sessions: ILogSession[] = [{ name: "Last", data: [] }];
+    const sessions: ILogSession[] = [{ name: 'Last', data: [] }];
     let currentSession = sessions[0];
     for (const line of lines) {
         if (line.includes(SESSION_SPLITTER)) {
@@ -112,6 +138,6 @@ export const parseLogs = (logs: string): {
 
     return {
         sessions,
-        hash: md5(logs)
+        hash: md5(logs),
     };
-}
+};

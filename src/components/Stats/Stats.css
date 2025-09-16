@@ -2,7 +2,7 @@
     h2 {
         color: var(--secondaryColor);
         text-shadow: var(--textShadow);
-        margin: 1rem 0 .5rem;
+        margin: 1rem 0 0.5rem;
         padding: 0;
     }
 
@@ -11,7 +11,7 @@
         padding: 0;
 
         li {
-            margin-bottom: .2rem;
+            margin-bottom: 0.2rem;
         }
     }
 
@@ -23,15 +23,15 @@
     }
 
     .badge.count {
-        background: rgb(255, 192, 203)
+        background: rgb(255, 192, 203);
     }
 
     .badge.info {
-        background: rgba(0, 0, 255, 0.2)
+        background: rgba(0, 0, 255, 0.2);
     }
 
     .badge.warning {
-        background: rgba(255, 255, 0, 0.4)
+        background: rgba(255, 255, 0, 0.4);
     }
 
     .badge.error {
@@ -39,11 +39,11 @@
     }
 
     .badge.debug {
-        background: rgba(0, 255, 0, 0.4)
+        background: rgba(0, 255, 0, 0.4);
     }
 
     .badge.unknown {
-        background: rgba(0, 0, 0, 0.2)
+        background: rgba(0, 0, 0, 0.2);
     }
 
     .level-stats {
@@ -65,7 +65,7 @@
         }
 
         td {
-            padding: .2rem 0;
+            padding: 0.2rem 0;
         }
 
         td.class-name {

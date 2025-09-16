@@ -12,7 +12,7 @@
 .classes-panel .buttons {
     display: flex;
     justify-content: space-evenly;
-    margin-bottom: .25rem;
+    margin-bottom: 0.25rem;
 }
 
 .classes-panel:hover,
