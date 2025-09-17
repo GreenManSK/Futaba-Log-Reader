@@ -13,6 +13,7 @@ import { calculateEntryHeight } from '../../helpers/tableRowHeightCalculator';
 import { useOptimizedTableContext } from '../../contexts/OptimizedTableContext';
 import { SearchHighlighter } from './SearchHighlighter';
 import { useSearchHighlighterContext } from '../../contexts/SearchHighlighterContext';
+import { FutabaError } from './FutabaError';
 
 interface ILogTableProps {
     data: ILogEntry[];
@@ -105,7 +106,6 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
         tableRef.current?.scrollToRow(index);
     }, [activeId, data, tableRef]);
 
-    // TODO: add noRowsRenderer
     return (
         <div className="table-wrapper">
             <AutoSizer onResize={({ width }) => setTableWidth(width)}>
@@ -121,6 +121,7 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
                         className="logs"
                         headerClassName="logs-header"
                         rowClassName={getRowClassName}
+                        noRowsRenderer={() => <FutabaError />}
                     >
                         <Column
                             label="#"
