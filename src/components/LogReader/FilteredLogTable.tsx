@@ -1,6 +1,5 @@
 import React from 'react';
 import { ILogEntry, LogLevel } from '../../data/ILogEntry';
-import { SearchFilter } from '../../data/SearchFilter';
 import { ITimeRange, TimeRange } from './TimeRange';
 import _ from 'lodash';
 import { Searches } from '../Search/Searches';
@@ -10,6 +9,7 @@ import './FilteredLogTable.css';
 import { ISearchFilter } from '../../data/ISearchFilter';
 import { useSettingsContext } from '../../contexts/SettingsContext';
 import { OptimizedLogTable } from './OptimizedLogTable';
+import { SearchHighlighterInput } from './SearchHighlighterInput';
 
 interface IFilteredLogTableProps {
     data?: ILogEntry[];
@@ -108,6 +108,7 @@ export const FilteredLogTable = (props: IFilteredLogTableProps) => {
                 <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
                 <Searches searches={searches} setSearches={setSearches} />
             </div>
+            <SearchHighlighterInput data={filteredData} />
             {isOptimizedRenderingEnabled ? (
                 <OptimizedLogTable
                     data={filteredData}

@@ -47,7 +47,7 @@ div.logs {
     text-align: left;
     border-collapse: collapse;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 
     tr,
     .logs-row {
@@ -126,4 +126,14 @@ div.logs {
     .logs-row:nth-child(even):hover {
         --bgOpacity: calc(var(--bgOpacityBase) + 3 * var(--increase));
     }
+}
+
+.highlight {
+    background-color: magenta;
+    color: #fff;
+}
+
+.highlight-active {
+    background: green;
+    color: #fff;
 }

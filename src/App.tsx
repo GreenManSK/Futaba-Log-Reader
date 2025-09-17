@@ -8,6 +8,7 @@ import { DropZone } from './components/DropZone';
 import { PresetsProvider } from './contexts/PresetsContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { OptimizedTableProvider } from './contexts/OptimizedTableContext';
+import { SearchHighlighterProvider } from './contexts/SearchHighlighterContext';
 
 function App() {
     return (
@@ -17,9 +18,11 @@ function App() {
                     <OptimizedTableProvider>
                         <PresetsProvider>
                             <SettingsProvider>
-                                <DropZone>
-                                    <Content />
-                                </DropZone>
+                                <SearchHighlighterProvider>
+                                    <DropZone>
+                                        <Content />
+                                    </DropZone>
+                                </SearchHighlighterProvider>
                             </SettingsProvider>
                         </PresetsProvider>
                     </OptimizedTableProvider>

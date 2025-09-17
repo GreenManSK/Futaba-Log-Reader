@@ -18,5 +18,6 @@ export interface ILogEntry {
     callId?: string;
 
     matchesFilter(search: ISearchFilter): boolean;
+    matchesHighlight(search: ISearchFilter): boolean;
     isInRange(start: Date, end: Date): boolean;
 }

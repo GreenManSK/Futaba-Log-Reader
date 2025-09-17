@@ -15,7 +15,8 @@ class LogEntry implements ILogEntry {
     public callId?: string;
 
     private _loggingClassLowerCase?: string;
-    private _messageLoweCase?: string;
+    private _messageLowerCase?: string;
+    private _dateTextLowerCase?: string;
 
     constructor(
         id: number,
@@ -40,15 +41,30 @@ class LogEntry implements ILogEntry {
         );
     }
 
+    public matchesHighlight(search: ISearchFilter): boolean {
+        return (
+            this.messageMatchesFilter(search) ||
+            this.loggingClassMatchesFilter(search) ||
+            this.dateMatchesFilter(search)
+        );
+    }
+
     public isInRange(start: Date, end: Date): boolean {
         return this.date >= start && this.date <= end;
     }
 
     private messageMatchesFilter(search: ISearchFilter): boolean {
-        if (this._messageLoweCase === undefined) {
-            this._messageLoweCase = this.message.toLowerCase();
+        if (this._messageLowerCase === undefined) {
+            this._messageLowerCase = this.message.toLowerCase();
         }
-        return search.matchesFilter(this.message, this._messageLoweCase);
+        return search.matchesFilter(this.message, this._messageLowerCase);
+    }
+
+    private dateMatchesFilter(search: ISearchFilter): boolean {
+        if (this._dateTextLowerCase === undefined) {
+            this._dateTextLowerCase = this.dateText.toLowerCase();
+        }
+        return search.matchesFilter(this.dateText, this._dateTextLowerCase);
     }
 
     private loggingClassMatchesFilter(search: ISearchFilter): boolean {

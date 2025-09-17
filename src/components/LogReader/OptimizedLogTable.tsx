@@ -11,6 +11,8 @@ import {
 } from 'react-virtualized';
 import { calculateEntryHeight } from '../../helpers/tableRowHeightCalculator';
 import { useOptimizedTableContext } from '../../contexts/OptimizedTableContext';
+import { SearchHighlighter } from './SearchHighlighter';
+import { useSearchHighlighterContext } from '../../contexts/SearchHighlighterContext';
 
 interface ILogTableProps {
     data: ILogEntry[];
@@ -32,6 +34,7 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
 
     const [tableWidth, setTableWidth] = React.useState(0);
     const tableRef = useOptimizedTableContext();
+    const { activeId } = useSearchHighlighterContext();
 
     const toggleFavourite = React.useCallback(
         (id: number) => {
@@ -92,7 +95,15 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
     React.useEffect(() => {
         // Needed to update width of each row
         tableRef.current?.recomputeRowHeights();
-    }, [tableWidth, data]);
+    }, [tableWidth, data, tableRef]);
+
+    React.useEffect(() => {
+        const index = data.findIndex((entry) => entry.id === activeId);
+        if (index === -1) {
+            return;
+        }
+        tableRef.current?.scrollToRow(index);
+    }, [activeId, data, tableRef]);
 
     // TODO: add noRowsRenderer
     return (
@@ -121,6 +132,12 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
                         <Column
                             label="Date"
                             dataKey="dateText"
+                            cellRenderer={({ rowData }) => (
+                                <SearchHighlighter
+                                    text={rowData.dateText}
+                                    id={rowData.id}
+                                />
+                            )}
                             width={DATE_WIDTH}
                             className="td date"
                         />
@@ -140,10 +157,16 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
                             className="td class-name"
                             cellRenderer={({ rowData }) => (
                                 <>
-                                    {rowData.loggingClass}
+                                    <SearchHighlighter
+                                        text={rowData.loggingClass}
+                                        id={rowData.id}
+                                    />
                                     {rowData.callId && (
                                         <div className="call-id">
-                                            {rowData.callId}
+                                            <SearchHighlighter
+                                                text={rowData.callId}
+                                                id={rowData.id}
+                                            />
                                         </div>
                                     )}
                                 </>
@@ -152,6 +175,12 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
                         <Column
                             label="Message"
                             dataKey="message"
+                            cellRenderer={({ rowData }) => (
+                                <SearchHighlighter
+                                    text={rowData.message}
+                                    id={rowData.id}
+                                />
+                            )}
                             width={100}
                             flexGrow={1}
                             key={width}
