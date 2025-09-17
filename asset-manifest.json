@@ -1,17 +1,21 @@
 {
   "files": {
-    "main.css": "/Futaba-Log-Reader/static/css/main.7e5bf047.css",
-    "main.js": "/Futaba-Log-Reader/static/js/main.9d128c47.js",
+    "main.css": "/Futaba-Log-Reader/static/css/main.fb4c89f6.css",
+    "main.js": "/Futaba-Log-Reader/static/js/main.fb21fa75.js",
     "static/js/453.6ce79f26.chunk.js": "/Futaba-Log-Reader/static/js/453.6ce79f26.chunk.js",
+    "static/media/1.png": "/Futaba-Log-Reader/static/media/1.e3fc4cc96c2676f56055.png",
+    "static/media/3.png": "/Futaba-Log-Reader/static/media/3.c6c1a3ca0cfe2b9564ca.png",
+    "static/media/4.png": "/Futaba-Log-Reader/static/media/4.602d6089dddde68b5842.png",
+    "static/media/2.png": "/Futaba-Log-Reader/static/media/2.f37a35e0ef32c24013e9.png",
     "static/media/futaba.webp": "/Futaba-Log-Reader/static/media/futaba.245b4370529466a4bf46.webp",
     "static/media/logo.png": "/Futaba-Log-Reader/static/media/logo.5105d774f7bb408143be.png",
     "index.html": "/Futaba-Log-Reader/index.html",
-    "main.7e5bf047.css.map": "/Futaba-Log-Reader/static/css/main.7e5bf047.css.map",
-    "main.9d128c47.js.map": "/Futaba-Log-Reader/static/js/main.9d128c47.js.map",
+    "main.fb4c89f6.css.map": "/Futaba-Log-Reader/static/css/main.fb4c89f6.css.map",
+    "main.fb21fa75.js.map": "/Futaba-Log-Reader/static/js/main.fb21fa75.js.map",
     "453.6ce79f26.chunk.js.map": "/Futaba-Log-Reader/static/js/453.6ce79f26.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7e5bf047.css",
-    "static/js/main.9d128c47.js"
+    "static/css/main.fb4c89f6.css",
+    "static/js/main.fb21fa75.js"
   ]
 }
