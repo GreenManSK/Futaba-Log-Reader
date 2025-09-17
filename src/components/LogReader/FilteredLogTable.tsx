@@ -78,8 +78,10 @@ export const FilteredLogTable = (props: IFilteredLogTableProps) => {
                     .slice(0, lineLimit)
             );
         };
-        return _.debounce(update, FILTER_DEBOUNCE);
-    }, [setFilteredData]);
+        return isOptimizedRenderingEnabled
+            ? update
+            : _.debounce(update, FILTER_DEBOUNCE);
+    }, [setFilteredData, isOptimizedRenderingEnabled]);
 
     React.useEffect(() => {
         updateFilteredData(
