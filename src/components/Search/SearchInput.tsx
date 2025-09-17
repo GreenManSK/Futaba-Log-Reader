@@ -1,12 +1,13 @@
 import React from 'react';
 import { SearchFilter } from '../../data/SearchFilter';
-import { Regex, CaseSensitive, Trash2, Pause } from 'lucide-react';
+import { Regex, CaseSensitive, Trash2, Pause, Folder } from 'lucide-react';
 import './SearchInput.css';
+import { SearchGroup } from '../../data/SearchGroup';
 
 interface ISearchProps {
     index: number;
     search: SearchFilter;
-    updateSearch: (index: number, search: SearchFilter) => void;
+    updateSearch: (index: number, search: SearchGroup | SearchFilter) => void;
     removeSearch: (index: number) => void;
 }
 
@@ -60,6 +61,12 @@ export const Search = React.memo((props: ISearchProps) => {
         setIsValid(isRegexValid(searchText));
     }, [isRegex, searchText]);
 
+    const wrapInGroup = () => {
+        const group = new SearchGroup();
+        group.children = [search];
+        updateSearch(index, group);
+    };
+
     return (
         <div className={`search ${isValid ? '' : 'invalid'}`}>
             <input
@@ -69,6 +76,9 @@ export const Search = React.memo((props: ISearchProps) => {
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Filter by"
             />
+            <button onClick={wrapInGroup} title="Wrap in group">
+                <Folder size={14} />
+            </button>
             <button
                 className={isCaseSensitive ? 'enabled' : 'disabled'}
                 onClick={() => setIsCaseSensitive(!isCaseSensitive)}
