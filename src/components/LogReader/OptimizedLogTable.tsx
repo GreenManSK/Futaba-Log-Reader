@@ -10,6 +10,7 @@ import {
     TableCellProps,
 } from 'react-virtualized';
 import { calculateEntryHeight } from '../../helpers/tableRowHeightCalculator';
+import { useOptimizedTableContext } from '../../contexts/OptimizedTableContext';
 
 interface ILogTableProps {
     data: ILogEntry[];
@@ -30,7 +31,7 @@ export const OptimizedLogTable = React.memo((props: ILogTableProps) => {
     const { data, favourites, setFavourites } = props;
 
     const [tableWidth, setTableWidth] = React.useState(0);
-    const tableRef = React.useRef<Table>(null);
+    const tableRef = useOptimizedTableContext();
 
     const toggleFavourite = React.useCallback(
         (id: number) => {
