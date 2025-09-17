@@ -1,6 +1,7 @@
 import React from 'react';
 import './LogClassFilter.css';
 import { useLogsDataContext } from '../../contexts/LogsDataContext';
+import { useSettingsContext } from '../../contexts/SettingsContext';
 
 interface ILogClassFilterProps {
     excludedClasses: Set<string>;
@@ -11,6 +12,7 @@ export const LogClassFilter = React.memo((props: ILogClassFilterProps) => {
     const { excludedClasses, setExcludedClasses } = props;
     const { currentSession } = useLogsDataContext();
     const [classFilter, setClassFilter] = React.useState('');
+    const { isOptimizedRenderingEnabled } = useSettingsContext();
 
     const classes = React.useMemo(() => {
         return (
@@ -65,7 +67,9 @@ export const LogClassFilter = React.memo((props: ILogClassFilterProps) => {
                 onChange={(e) => setClassFilter(e.target.value)}
                 placeholder="Select class"
             />
-            <div className="classes-list">
+            <div
+                className={`classes-list ${isOptimizedRenderingEnabled ? 'optimized' : ''}`}
+            >
                 <ul className="checkbox-list">
                     {filteredClasses.map((cls) => (
                         <li key={cls}>

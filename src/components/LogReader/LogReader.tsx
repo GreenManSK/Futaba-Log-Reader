@@ -13,6 +13,7 @@ import {
 } from '../../contexts/DataStorageContext';
 import { GoToTopButton } from './GoToTopButton';
 import { PresetsMenu } from '../Presets/PresetsMenu';
+import { OptimizedRenderingSettings } from './OptimizedRenderingSettings';
 
 const DEFAULT_LINES_LIMIT = 5000;
 
@@ -71,7 +72,12 @@ export const LogReader = () => {
                 />
             </div>
             <div className="main-content">
-                <SessionSelector />
+                <div>
+                    <SessionSelector />
+                </div>
+                <div>
+                    <OptimizedRenderingSettings />
+                </div>
                 <div className="tabs-buttons">
                     <button
                         className={

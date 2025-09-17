@@ -9,6 +9,11 @@
     white-space: nowrap;
 }
 
+.classes-list.optimized {
+    overflow-y: scroll;
+    max-height: calc(100vh - 400px);
+}
+
 .classes-panel .buttons {
     display: flex;
     justify-content: space-evenly;

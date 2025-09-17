@@ -8,6 +8,8 @@ import { LogTable } from './LogTable';
 import { LineLimit } from './LineLimit';
 import './FilteredLogTable.css';
 import { ISearchFilter } from '../../data/ISearchFilter';
+import { useSettingsContext } from '../../contexts/SettingsContext';
+import { OptimizedLogTable } from './OptimizedLogTable';
 
 interface IFilteredLogTableProps {
     data?: ILogEntry[];
@@ -39,6 +41,8 @@ export const FilteredLogTable = (props: IFilteredLogTableProps) => {
         favourites,
         setFavourites,
     } = props;
+
+    const { isOptimizedRenderingEnabled } = useSettingsContext();
 
     const [filteredData, setFilteredData] = React.useState([] as ILogEntry[]);
 
@@ -102,11 +106,19 @@ export const FilteredLogTable = (props: IFilteredLogTableProps) => {
                 <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
                 <Searches searches={searches} setSearches={setSearches} />
             </div>
-            <LogTable
-                data={filteredData}
-                favourites={favourites}
-                setFavourites={setFavourites}
-            />
+            {isOptimizedRenderingEnabled ? (
+                <OptimizedLogTable
+                    data={filteredData}
+                    favourites={favourites}
+                    setFavourites={setFavourites}
+                />
+            ) : (
+                <LogTable
+                    data={filteredData}
+                    favourites={favourites}
+                    setFavourites={setFavourites}
+                />
+            )}
             <LineLimit lineLimit={lineLimit} setLineLimit={setLineLimit} />
         </>
     );

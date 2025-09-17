@@ -14,7 +14,7 @@ export const SessionSelector = React.memo(() => {
 
     // Create HTML select to choose session
     return (
-        <div>
+        <>
             <strong>Current file:</strong> {fileName} &nbsp;
             <strong>Current session:</strong> &nbsp;
             <select value={currentSession?.name} onChange={onChange}>
@@ -24,7 +24,7 @@ export const SessionSelector = React.memo(() => {
                     </option>
                 ))}
             </select>
-        </div>
+        </>
     );
 });
 SessionSelector.displayName = 'SessionSelector';
