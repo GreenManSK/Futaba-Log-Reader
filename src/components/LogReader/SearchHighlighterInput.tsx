@@ -3,7 +3,7 @@ import { ILogEntry } from '../../data/ILogEntry';
 import { useSearchHighlighterContext } from '../../contexts/SearchHighlighterContext';
 import './SearchHighlighterInput.css';
 import { SearchFilter } from '../../data/SearchFilter';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, X } from 'lucide-react';
 
 interface ISearchHighlighterInputProps {
     data: ILogEntry[];
@@ -51,28 +51,19 @@ export const SearchHighlighterInput = React.memo(
             setMatches(matches);
         }, [data, searchText, setActiveId]);
 
-        const scrollInputToTop = React.useCallback(() => {
-            if (inputRef.current) {
-                const rect = inputRef.current.getBoundingClientRect();
-                window.scrollBy({
-                    top: rect.top - 10, // 10px padding above input
-                    left: 0,
-                    behavior: 'smooth',
-                });
-            }
-        }, []);
-
         const nextMatch = React.useCallback(() => {
             setCurrentMatch((prev) => (prev + 1) % matches.length);
-            scrollInputToTop();
-        }, [matches, scrollInputToTop]);
+        }, [matches]);
 
         const prevMatch = React.useCallback(() => {
             setCurrentMatch((prev) =>
-                prev === 1 ? matches.length - 1 : (prev - 1) % matches.length
+                prev === 0 ? matches.length - 1 : (prev - 1) % matches.length
             );
-            scrollInputToTop();
-        }, [matches, scrollInputToTop]);
+        }, [matches]);
+
+        const clearHighlight = React.useCallback(() => {
+            setSearchText('');
+        }, [setSearchText]);
 
         React.useEffect(() => {
             if (matches.length === 0 || !matches[currentMatch]) {
@@ -118,14 +109,23 @@ export const SearchHighlighterInput = React.memo(
                         }
                     }}
                 />
-                {matches.length > 0 && (
-                    <button title="Previous highlight" onClick={prevMatch}>
-                        <ChevronUp size={14} />
-                    </button>
-                )}
-                {matches.length > 0 && (
-                    <button title="Next highlight" onClick={nextMatch}>
-                        <ChevronDown size={14} />
+                <button
+                    title="Previous highlight"
+                    onClick={prevMatch}
+                    disabled={matches.length === 0}
+                >
+                    <ChevronUp size={14} />
+                </button>
+                <button
+                    title="Next highlight"
+                    onClick={nextMatch}
+                    disabled={matches.length === 0}
+                >
+                    <ChevronDown size={14} />
+                </button>
+                {searchText && (
+                    <button title="Clear highlight" onClick={clearHighlight}>
+                        <X size={14} />
                     </button>
                 )}
                 &nbsp;
