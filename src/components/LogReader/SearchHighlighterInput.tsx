@@ -106,6 +106,9 @@ export const SearchHighlighterInput = React.memo(
                                 nextMatch();
                             }
                             e.preventDefault();
+                        } else if (e.key === 'Escape') {
+                            clearHighlight();
+                            e.preventDefault();
                         }
                     }}
                 />
