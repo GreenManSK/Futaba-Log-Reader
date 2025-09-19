@@ -28,7 +28,7 @@ export class SearchGroup implements ISearchFilter {
         }
     }
 
-    public matchesFilter(text: string, lowerCaseText?: string): boolean {
+    public matchesFilter(text: string[], lowerCaseText?: string[]): boolean {
         if (!this.enabled || !this.children.length) {
             return true;
         }

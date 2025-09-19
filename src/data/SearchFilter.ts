@@ -36,6 +36,15 @@ export class SearchFilter implements ISearchFilter {
     }
 
     public matchesFilter(
+        text: string[],
+        lowerCaseText?: string[] | undefined
+    ): boolean {
+        return text.some((t, index) =>
+            this._matchesFilter(t, lowerCaseText && lowerCaseText[index])
+        );
+    }
+
+    private _matchesFilter(
         text: string,
         lowerCaseText?: string | undefined
     ): boolean {

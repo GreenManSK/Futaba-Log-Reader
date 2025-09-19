@@ -35,49 +35,51 @@ class LogEntry implements ILogEntry {
     }
 
     public matchesFilter(search: ISearchFilter): boolean {
-        return (
-            this.messageMatchesFilter(search) ||
-            this.loggingClassMatchesFilter(search)
-        );
+        const text: string[] = [];
+        const lowerCaseText: string[] = [];
+        this.addMessageMatches(text, lowerCaseText);
+        this.addLoggingClassMatches(text, lowerCaseText);
+        return search.matchesFilter(text, lowerCaseText);
     }
 
     public matchesHighlight(search: ISearchFilter): boolean {
-        return (
-            this.messageMatchesFilter(search) ||
-            this.loggingClassMatchesFilter(search) ||
-            this.dateMatchesFilter(search)
-        );
+        const text: string[] = [];
+        const lowerCaseText: string[] = [];
+        this.addMessageMatches(text, lowerCaseText);
+        this.addLoggingClassMatches(text, lowerCaseText);
+        this.addDateMatches(text, lowerCaseText);
+        return search.matchesFilter(text, lowerCaseText);
     }
 
     public isInRange(start: Date, end: Date): boolean {
         return this.date >= start && this.date <= end;
     }
 
-    private messageMatchesFilter(search: ISearchFilter): boolean {
+    private addMessageMatches(text: string[], lowerCaseText: string[]) {
         if (this._messageLowerCase === undefined) {
             this._messageLowerCase = this.message.toLowerCase();
         }
-        return search.matchesFilter(this.message, this._messageLowerCase);
+        text.push(this.message);
+        lowerCaseText.push(this._messageLowerCase);
     }
-
-    private dateMatchesFilter(search: ISearchFilter): boolean {
+    private addDateMatches(text: string[], lowerCaseText: string[]) {
         if (this._dateTextLowerCase === undefined) {
             this._dateTextLowerCase = this.dateText.toLowerCase();
         }
-        return search.matchesFilter(this.dateText, this._dateTextLowerCase);
+        text.push(this.dateText);
+        lowerCaseText.push(this._dateTextLowerCase);
     }
 
-    private loggingClassMatchesFilter(search: ISearchFilter): boolean {
+    private addLoggingClassMatches(text: string[], lowerCaseText: string[]) {
         if (this._loggingClassLowerCase === undefined) {
             this._loggingClassLowerCase = this.loggingClass.toLowerCase();
         }
-        return (
-            search.matchesFilter(
-                this.loggingClass,
-                this._loggingClassLowerCase
-            ) ||
-            !!(this.callId && search.matchesFilter(this.callId, this.callId))
-        );
+        text.push(this.loggingClass);
+        lowerCaseText.push(this._loggingClassLowerCase);
+        if (this.callId) {
+            text.push(this.callId);
+            lowerCaseText.push(this.callId);
+        }
     }
 
     private setLoggingClassData(loggingClass: string) {
