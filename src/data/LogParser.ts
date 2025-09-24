@@ -128,7 +128,7 @@ const parseLine = (line: string, index: number): ILogEntry => {
 };
 
 const SESSION_SPLITTER = 'The following logs are for previous session';
-const LINE_SPLITTER = /(?:\r\n|\n\r|\r|\n)/;
+const LINE_SPLITTER = /(?:\r\n|\n\r|\r)/;
 
 export const parseLogs = (
     logs: string
@@ -136,10 +136,11 @@ export const parseLogs = (
     sessions: ILogSession[];
     hash: string;
 } => {
-    const lines = logs
-        .split(LINE_SPLITTER)
-        .map((l) => l.trim())
-        .filter((l) => l !== '');
+    let splitLines = logs.split(LINE_SPLITTER);
+    if (splitLines.length === 1) {
+        splitLines = logs.split('\n');
+    }
+    const lines = splitLines.map((l) => l.trim()).filter((l) => l !== '');
     // First line contains info about how many logs are guaranteed
     lines.shift();
 

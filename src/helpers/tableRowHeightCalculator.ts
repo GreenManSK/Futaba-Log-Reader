@@ -73,7 +73,9 @@ const estimateRowHeight = (
     lineHeight: number
 ) => {
     const textWidth = text.length * fontSize.width;
-    let lines = Math.max(1, Math.ceil(textWidth / cellWidth));
+    let lines =
+        Math.max(1, Math.ceil(textWidth / cellWidth)) +
+        (text.match(/\n/g) || []).length;
     if (lines >= 2) {
         // Safety for forced breaking
         lines += 1;
