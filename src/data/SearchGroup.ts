@@ -33,6 +33,10 @@ export class SearchGroup implements ISearchFilter {
             return true;
         }
 
+        if (this.children.every((child) => !child.enabled)) {
+            return true;
+        }
+
         for (const child of this.children) {
             if (!child.enabled) {
                 continue;
